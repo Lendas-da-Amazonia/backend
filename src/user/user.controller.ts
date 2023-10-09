@@ -13,29 +13,9 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { LoginDto } from './dto/login.dto';
 import { IsPublic } from 'src/auth/decorators/is-public.decorator';
 import {
-  ExpiredCodeException,
-  InvalidCodeException,
   InvalidPasswordException,
-  InvalidTokenException,
-  UsedCodeException,
-  ValidResetPasswordTokenFoundException,
-  UserNotFoundException,
-  MissingFieldsException,
-  ContactEmailAreadyExistsException as ContactEmailAlreadyExistsException,
-  CourseNotFoundException,
-  EmailAreadyExistsException as EmailAlreadyExistsException,
-  EnrollmentAlreadyExistsException,
   InvalidEmailException,
-  InvalidEnrollmentException,
-  InvalidLinkedinURLException,
   InvalidNameException,
-  InvalidWhatsAppNumberException,
-  PasswordsDoNotMatchException,
-  PersonalDataInPasswordException,
-  InvalidContactEmailException,
-  OldPasswordNotProvidedException,
-  WrongPasswordException,
-  InvalidStudentParametersException,
 } from 'src/user/utils/exceptions';
 
 @Controller('user')
@@ -56,7 +36,11 @@ export class UserController {
     try {
       return await this.userService.cadastrarUser(createUserDto);
     } catch (error) {
-      if (error instanceof InvalidEmailException) {
+      if (
+        error instanceof InvalidEmailException ||
+        error instanceof InvalidPasswordException ||
+        error instanceof InvalidNameException
+      ) {
         throw new BadRequestException(error.message);
       }
     }

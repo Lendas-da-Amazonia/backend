@@ -2,6 +2,7 @@ import { Model } from 'mongoose';
 import { Myth, MythDocument } from './schemas/myth.schema';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { CreateMythDto } from './dto/create-myth.dto';
 
 @Injectable()
 export class MythService {
@@ -13,8 +14,12 @@ export class MythService {
     return { message: `${total} lendas encontradas`, myths };
   }
 
-  async cadastrarMyth(myth: Myth): Promise<Myth> {
-    const createdMyth = new this.mythModel(myth);
+  async cadastrarMyth(myth: CreateMythDto, user_id: string): Promise<Myth> {
+    const createdMyth = new this.mythModel({
+      id_autor: user_id,
+      titulo: myth.titulo,
+      texto: myth.texto,
+    });
     return createdMyth.save();
   }
 

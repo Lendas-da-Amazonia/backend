@@ -16,6 +16,15 @@ async function bootstrap() {
       'API para o projeto Lendas da Amazônia - 2023 - Projeto de Engenharia de Software - UFAM',
     )
     .setVersion('1.0')
+    .addTag('Lendas da Amazônia')
+    .addBearerAuth({
+      description: 'Please enter token in following format: Bearer <JWT>',
+      name: 'Authorization',
+      bearerFormat: 'Bearer',
+      scheme: 'Bearer',
+      type: 'http',
+      in: 'Header',
+    })
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

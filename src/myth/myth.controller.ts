@@ -1,12 +1,28 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
 import { MythService } from './myth.service';
 import { CreateMythDto } from './dto/create-myth.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Request } from 'express';
+import { JwtService } from '@nestjs/jwt';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { JWTUser } from 'src/auth/interfaces/jwt-user.interface';
 
-@Controller('myth')
 @ApiTags('Myth')
+@Controller('myth')
 export class MythController {
-  constructor(private readonly mythService: MythService) {}
+  constructor(
+    private readonly mythService: MythService,
+    private jwtService: JwtService,
+  ) {}
 
   @ApiOperation({ description: 'Rota para listar todas as lendas.' })
   @Get()
@@ -14,10 +30,17 @@ export class MythController {
     return this.mythService.listarMyth();
   }
 
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiOperation({ description: 'Rota para criar lenda' })
   @Post('create')
-  async cadastrarMyth(@Body() createMythDto: CreateMythDto) {
-    return this.mythService.cadastrarMyth(createMythDto);
+  async cadastrarMyth(
+    @Req() req: Request,
+    @Body() createMythDto: CreateMythDto,
+  ) {
+    const token = req.headers.authorization.toString().replace('Bearer ', '');
+    const user = this.jwtService.decode(token) as JWTUser;
+    return this.mythService.cadastrarMyth(createMythDto, user._id);
   }
 
   @Get(':titulo')

@@ -6,22 +6,11 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { LoginDto } from './dto/login.dto';
 import { Validations } from 'src/utils/validations';
 import {
-  ContactEmailAreadyExistsException,
-  CourseNotFoundException,
-  EmailAreadyExistsException,
-  EnrollmentAlreadyExistsException,
-  InvalidContactEmailException,
   InvalidEmailException,
-  InvalidEnrollmentException,
-  InvalidLinkedinURLException,
   InvalidNameException,
   InvalidPasswordException,
-  InvalidWhatsAppNumberException,
-  MissingFieldsException,
-  PasswordsDoNotMatchException,
-  PersonalDataInPasswordException,
-  UserNotFoundException,
 } from './utils/exceptions';
+import { hashPassword } from 'src/utils/bcrypt';
 
 @Injectable()
 export class UserService {
@@ -41,8 +30,19 @@ export class UserService {
     if (!Validations.validateEmail(createUserDto.email)) {
       throw new InvalidEmailException();
     }
+    if (!Validations.validatePassword(createUserDto.senha)) {
+      throw new InvalidPasswordException();
+    }
+    if (!Validations.validateName(createUserDto.nome)) {
+      throw new InvalidNameException();
+    }
 
-    await this.userModel.create(createUserDto);
+    await this.userModel.create({
+      email: createUserDto.email,
+      nome: Validations.capitalizeName(createUserDto.nome),
+      senha: await hashPassword(createUserDto.senha),
+    });
+
     return { status: 201, message: 'Cadastrado com sucesso!' };
   }
 

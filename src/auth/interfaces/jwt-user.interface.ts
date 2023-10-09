@@ -1,6 +1,7 @@
-import { Role } from '../enums/role.enum';
-
 export interface JWTUser {
-  id: number;
+  _id: string;
   username: string;
+  email: string;
+  iat?: number;
+  exp?: number;
 }

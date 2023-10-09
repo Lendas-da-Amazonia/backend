@@ -5,8 +5,5 @@ export class CreateMythDto {
   titulo: string;
 
   @ApiProperty()
-  id_autor: string;
-
-  @ApiProperty()
   texto: string;
 }
