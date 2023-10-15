@@ -1,6 +1,6 @@
 import { Model } from 'mongoose';
 import { Myth, MythDocument } from './schemas/myth.schema';
-import { Injectable } from '@nestjs/common';
+import { PreconditionFailedException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateMythDto } from './dto/create-myth.dto';
 
@@ -15,6 +15,13 @@ export class MythService {
   }
 
   async createMyth(myth: CreateMythDto, user_id: string): Promise<Myth> {
+    if (!myth.titulo) {
+      throw new PreconditionFailedException('Titulo não pode ser vazio');
+    }
+    if (!myth.texto) {
+      throw new PreconditionFailedException('Texto não pode ser vazio');
+    }
+
     const createdMyth = new this.mythModel({
       id_autor: user_id,
       titulo: myth.titulo,

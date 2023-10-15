@@ -27,6 +27,12 @@ let MythService = class MythService {
         return { message: `${total} lendas encontradas`, myths };
     }
     async createMyth(myth, user_id) {
+        if (!myth.titulo) {
+            throw new common_1.PreconditionFailedException('Titulo não pode ser vazio');
+        }
+        if (!myth.texto) {
+            throw new common_1.PreconditionFailedException('Texto não pode ser vazio');
+        }
         const createdMyth = new this.mythModel({
             id_autor: user_id,
             titulo: myth.titulo,
