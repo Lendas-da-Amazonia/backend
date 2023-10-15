@@ -6,10 +6,10 @@ export type MythDocument = Myth & Document;
 @Schema({ collection: 'lendas' })
 export class Myth {
   @Prop()
-  titulo: string;
+  id_autor: string;
 
   @Prop()
-  id_autor: string;
+  titulo: string;
 
   @Prop()
   texto: string;

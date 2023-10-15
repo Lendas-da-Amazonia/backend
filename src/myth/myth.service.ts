@@ -14,7 +14,7 @@ export class MythService {
     return { message: `${total} lendas encontradas`, myths };
   }
 
-  async cadastrarMyth(myth: CreateMythDto, user_id: string): Promise<Myth> {
+  async createMyth(myth: CreateMythDto, user_id: string): Promise<Myth> {
     const createdMyth = new this.mythModel({
       id_autor: user_id,
       titulo: myth.titulo,
@@ -23,11 +23,11 @@ export class MythService {
     return createdMyth.save();
   }
 
-  async encontrarMyth(titulo: string): Promise<Myth> {
+  async findMyth(titulo: string): Promise<Myth> {
     return this.mythModel.findOne({ titulo }).exec();
   }
 
-  async deletarMyth(titulo: string): Promise<any> {
+  async deleteMyth(titulo: string): Promise<any> {
     return this.mythModel.deleteOne({ titulo }).exec();
   }
 }

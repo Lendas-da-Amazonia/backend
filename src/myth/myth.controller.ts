@@ -40,16 +40,16 @@ export class MythController {
   ) {
     const token = req.headers.authorization.toString().replace('Bearer ', '');
     const user = this.jwtService.decode(token) as JWTUser;
-    return this.mythService.cadastrarMyth(createMythDto, user._id);
+    return this.mythService.createMyth(createMythDto, user._id);
   }
 
   @Get(':titulo')
   async encontrarMyth(@Param('titulo') titulo: string) {
-    return this.mythService.encontrarMyth(titulo);
+    return this.mythService.findMyth(titulo);
   }
 
   @Delete('delete/:titulo')
   async deletarMyth(@Param('titulo') titulo: string) {
-    return this.mythService.deletarMyth(titulo);
+    return this.mythService.deleteMyth(titulo);
   }
 }
