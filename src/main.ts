@@ -28,7 +28,12 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-
+  SwaggerModule.setup('swagger', app, document, {
+    swaggerOptions: {
+      customJs:
+        '[6](https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.0.0/swagger-ui-bundle.js)',
+    },
+  });
   SwaggerModule.setup('swagger', app, document);
 
   await app.listen(3000);
