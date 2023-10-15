@@ -1,11 +1,11 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from './schemas/user.schema';
 import { CreateUserDto } from './dto/create-user.dto';
-import { LoginDto } from './dto/login.dto';
 import { Validations } from 'src/utils/validations';
 import {
+  EmailAreadyExistsException,
   InvalidEmailException,
   InvalidNameException,
   InvalidPasswordException,
@@ -37,6 +37,10 @@ export class UserService {
       throw new InvalidNameException();
     }
 
+    const email_exists = await this.findOneByEmail(createUserDto.email);
+
+    if (email_exists) throw new EmailAreadyExistsException();
+
     await this.userModel.create({
       email: createUserDto.email,
       nome: Validations.capitalizeName(createUserDto.nome),
@@ -44,17 +48,6 @@ export class UserService {
     });
 
     return { status: 201, message: 'Cadastrado com sucesso!' };
-  }
-
-  async loginUser(data: LoginDto) {
-    if (!data.email || !data.password) {
-      throw new Error('Dados inválidos');
-    }
-    const user = await this.userModel.findOne({ email: data.email });
-    if (!user || user.senha != data.password) {
-      throw new UnauthorizedException('Usuário(a) ou senha inválidos.');
-    }
-    return { message: 'Logado com sucesso' };
   }
 
   async encontrarUser(nome: string) {

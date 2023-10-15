@@ -10,12 +10,12 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { LoginDto } from './dto/login.dto';
 import { IsPublic } from 'src/auth/decorators/is-public.decorator';
 import {
   InvalidPasswordException,
   InvalidEmailException,
   InvalidNameException,
+  EmailAreadyExistsException,
 } from 'src/user/utils/exceptions';
 
 @Controller('user')
@@ -39,17 +39,12 @@ export class UserController {
       if (
         error instanceof InvalidEmailException ||
         error instanceof InvalidPasswordException ||
-        error instanceof InvalidNameException
+        error instanceof InvalidNameException ||
+        error instanceof EmailAreadyExistsException
       ) {
         throw new BadRequestException(error.message);
       }
     }
-  }
-
-  @ApiOperation({ description: 'Rota para login.' })
-  @Post('login')
-  async login(@Body() data: LoginDto) {
-    return this.userService.loginUser(data);
   }
 
   @Get(':nome')
