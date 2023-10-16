@@ -16,12 +16,13 @@ const myth_module_1 = require("./myth/myth.module");
 const auth_module_1 = require("./auth/auth.module");
 const roles_guard_1 = require("./auth/guards/roles.guard");
 const jwt_1 = require("@nestjs/jwt");
+const comment_module_1 = require("./comment/comment.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [auth_module_1.AuthModule, mongo_service_1.DatabaseModule, user_module_1.UserModule, myth_module_1.MythModule],
+        imports: [auth_module_1.AuthModule, mongo_service_1.DatabaseModule, user_module_1.UserModule, myth_module_1.MythModule, comment_module_1.CommentModule],
         controllers: [app_controller_1.AppController],
         providers: [
             app_service_1.AppService,

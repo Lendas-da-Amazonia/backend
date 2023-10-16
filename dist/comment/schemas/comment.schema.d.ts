@@ -23,16 +23,14 @@
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
 import { Document } from 'mongoose';
-export type MythDocument = Myth & Document;
-export declare class Myth {
-    id_autor: string;
-    created_at: Date;
-    update_at: Date;
-    titulo: string;
-    texto: string;
+export type CommentDocument = Comment & Document;
+export declare class Comment {
+    id_user: string;
+    id_myth: string;
+    text: string;
 }
-export declare const MythSchema: import("mongoose").Schema<Myth, import("mongoose").Model<Myth, any, any, any, Document<unknown, any, Myth> & Myth & {
+export declare const CommentSchema: import("mongoose").Schema<Comment, import("mongoose").Model<Comment, any, any, any, Document<unknown, any, Comment> & Comment & {
     _id: import("mongoose").Types.ObjectId;
-}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Myth, Document<unknown, {}, Myth> & Myth & {
+}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Comment, Document<unknown, {}, Comment> & Comment & {
     _id: import("mongoose").Types.ObjectId;
 }>;

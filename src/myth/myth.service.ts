@@ -21,9 +21,13 @@ export class MythService {
     if (!myth.texto) {
       throw new PreconditionFailedException('Texto não pode ser vazio');
     }
+    const now = new Date();
+    const AMT_OFFSET = -4;
+    now.setHours(now.getHours() + AMT_OFFSET);
 
     const createdMyth = new this.mythModel({
       id_autor: user_id,
+      created_at: now,
       titulo: myth.titulo,
       texto: myth.texto,
     });

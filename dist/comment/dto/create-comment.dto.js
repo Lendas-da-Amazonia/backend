@@ -9,33 +9,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MythSchema = exports.Myth = void 0;
-const mongoose_1 = require("@nestjs/mongoose");
-let Myth = class Myth {
-};
-exports.Myth = Myth;
+exports.CreateCommentDto = void 0;
+const swagger_1 = require("@nestjs/swagger");
+class CreateCommentDto {
+}
+exports.CreateCommentDto = CreateCommentDto;
 __decorate([
-    (0, mongoose_1.Prop)(),
+    (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
-], Myth.prototype, "id_autor", void 0);
+], CreateCommentDto.prototype, "mythId", void 0);
 __decorate([
-    (0, mongoose_1.Prop)(),
-    __metadata("design:type", Date)
-], Myth.prototype, "created_at", void 0);
-__decorate([
-    (0, mongoose_1.Prop)(),
-    __metadata("design:type", Date)
-], Myth.prototype, "update_at", void 0);
-__decorate([
-    (0, mongoose_1.Prop)(),
+    (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
-], Myth.prototype, "titulo", void 0);
-__decorate([
-    (0, mongoose_1.Prop)(),
-    __metadata("design:type", String)
-], Myth.prototype, "texto", void 0);
-exports.Myth = Myth = __decorate([
-    (0, mongoose_1.Schema)({ collection: 'lendas' })
-], Myth);
-exports.MythSchema = mongoose_1.SchemaFactory.createForClass(Myth);
-//# sourceMappingURL=myth.schema.js.map
+], CreateCommentDto.prototype, "text", void 0);
+//# sourceMappingURL=create-comment.dto.js.map

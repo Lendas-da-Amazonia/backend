@@ -7,9 +7,10 @@ import { MythModule } from './myth/myth.module';
 import { AuthModule } from './auth/auth.module';
 import { RolesGuard } from './auth/guards/roles.guard';
 import { JwtService } from '@nestjs/jwt';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
-  imports: [AuthModule, DatabaseModule, UserModule, MythModule],
+  imports: [AuthModule, DatabaseModule, UserModule, MythModule, CommentModule],
   controllers: [AppController],
   providers: [
     AppService,

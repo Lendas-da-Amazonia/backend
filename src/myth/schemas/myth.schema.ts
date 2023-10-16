@@ -9,6 +9,12 @@ export class Myth {
   id_autor: string;
 
   @Prop()
+  created_at: Date;
+
+  @Prop()
+  update_at: Date;
+
+  @Prop()
   titulo: string;
 
   @Prop()

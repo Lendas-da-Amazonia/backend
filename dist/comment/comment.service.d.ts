@@ -22,17 +22,20 @@
 /// <reference types="mongoose/types/validation" />
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
-import { Document } from 'mongoose';
-export type MythDocument = Myth & Document;
-export declare class Myth {
-    id_autor: string;
-    created_at: Date;
-    update_at: Date;
-    titulo: string;
-    texto: string;
+import { Comment, CommentDocument } from './schemas/comment.schema';
+import { Model } from 'mongoose';
+import { CreateCommentDto } from './dto/create-comment.dto';
+import { Myth, MythDocument } from 'src/myth/schemas/myth.schema';
+export declare class CommentService {
+    private commentModel;
+    private mythModel;
+    constructor(commentModel: Model<CommentDocument>, mythModel: Model<MythDocument>);
+    findAll(): Promise<Comment[]>;
+    createComment(comment: CreateCommentDto, user_id: string): Promise<{
+        status: number;
+        message: string;
+    }>;
+    findOneByTitle(title: string): Promise<import("mongoose").Document<unknown, {}, MythDocument> & Myth & import("mongoose").Document<any, any, any> & {
+        _id: import("mongoose").Types.ObjectId;
+    }>;
 }
-export declare const MythSchema: import("mongoose").Schema<Myth, import("mongoose").Model<Myth, any, any, any, Document<unknown, any, Myth> & Myth & {
-    _id: import("mongoose").Types.ObjectId;
-}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Myth, Document<unknown, {}, Myth> & Myth & {
-    _id: import("mongoose").Types.ObjectId;
-}>;
