@@ -44,11 +44,22 @@ let MythService = class MythService {
         });
         return createdMyth.save();
     }
-    async findMyth(titulo) {
-        return this.mythModel.findOne({ titulo }).exec();
+    async findMythByID(_id) {
+        return this.mythModel.findOne({ _id }).exec();
     }
-    async deleteMyth(titulo) {
-        return this.mythModel.deleteOne({ titulo }).exec();
+    async findMythByAuthorID(id_autor) {
+        try {
+            const mitosDoUser = await this.mythModel.find({ id_autor });
+            console.log(mitosDoUser);
+            const quantidade = await this.mythModel.find({ id_autor }).count();
+            return { message: `Foram encontrados ${quantidade} mitos.`, mitosDoUser };
+        }
+        catch (e) {
+            throw new Error('Usuário não encontrado');
+        }
+    }
+    async deleteMyth(_id) {
+        return this.mythModel.findOneAndDelete({ _id: _id }).exec();
     }
 };
 exports.MythService = MythService;

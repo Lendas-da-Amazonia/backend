@@ -43,13 +43,29 @@ export class MythController {
     return this.mythService.createMyth(createMythDto, user._id);
   }
 
-  @Get(':titulo')
-  async encontrarMyth(@Param('titulo') titulo: string) {
-    return this.mythService.findMyth(titulo);
+  // !! deprecated, _id has main priority
+  // @Get(':titulo')
+  // async encontrarMyth(@Param('titulo') titulo: string) {
+  //   return this.mythService.findMyth(titulo);
+  // }
+
+  @Get(':_id')
+  async encontrarMythByID(@Param('_id') _id: string) {
+    return this.mythService.findMythByID(_id);
   }
 
-  @Delete('delete/:titulo')
-  async deletarMyth(@Param('titulo') titulo: string) {
-    return this.mythService.deleteMyth(titulo);
+  @Get('/author/:_id')
+  async encontrarMythByAuthor(@Param('_id') _id: string) {
+    return this.mythService.findMythByAuthorID(_id);
+  }
+
+  // @Delete('delete/:titulo')
+  // async deletarMyth(@Param('titulo') titulo: string) {
+  //   return this.mythService.deleteMyth(titulo);
+  // }
+
+  @Delete('delete/:_id')
+  async deletarMythByID(@Param('_id') _id: string) {
+    return this.mythService.deleteMyth(_id);
   }
 }

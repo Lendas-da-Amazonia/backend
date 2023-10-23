@@ -38,6 +38,12 @@ export declare class MythController {
         })[];
     }>;
     cadastrarMyth(req: Request, createMythDto: CreateMythDto): Promise<import("./schemas/myth.schema").Myth>;
-    encontrarMyth(titulo: string): Promise<import("./schemas/myth.schema").Myth>;
-    deletarMyth(titulo: string): Promise<any>;
+    encontrarMythByID(_id: string): Promise<import("./schemas/myth.schema").Myth>;
+    encontrarMythByAuthor(_id: string): Promise<{
+        message: string;
+        mitosDoUser: (import("mongoose").Document<unknown, {}, import("./schemas/myth.schema").MythDocument> & import("./schemas/myth.schema").Myth & import("mongoose").Document<any, any, any> & {
+            _id: import("mongoose").Types.ObjectId;
+        })[];
+    }>;
+    deletarMythByID(_id: string): Promise<any>;
 }

@@ -47,13 +47,20 @@ export class UserController {
     }
   }
 
-  @Get(':nome')
-  async encontrarUser(@Param('nome') nome: string) {
-    return this.userService.encontrarUser(nome);
+  // !! Deprecated cause cannot use for get id
+  // @Get(':nome')
+  // async encontrarUser(@Param('nome') nome: string) {
+  //   return this.userService.encontrarUser(nome);
+  // }
+
+  @Get(':_id')
+  async encontrarUserByID(@Param('_id') _id: string) {
+    return this.userService.encontrarUserByID(_id);
   }
 
-  @Delete('delete/:nome')
-  async deletarUser(@Param('nome') nome: string) {
-    return this.userService.deletarUser(nome);
+  // changed params to _id
+  @Delete('delete/:_id')
+  async deletarUser(@Param('_id') _id: string) {
+    return this.userService.deletarUserByID(_id);
   }
 }

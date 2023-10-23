@@ -1,10 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 
 export type MythDocument = Myth & Document;
 
 @Schema({ collection: 'lendas' })
 export class Myth {
+  id: mongoose.Types.ObjectId;
+
   @Prop()
   id_autor: string;
 

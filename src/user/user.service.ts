@@ -59,6 +59,16 @@ export class UserService {
     }
   }
 
+  async encontrarUserByID(_id: string) {
+    try {
+      const buscado = await this.userModel.findOne({ _id: _id });
+
+      return { message: `Usuário foi encontrado`, buscado };
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
+
   async findOneByEmail(email: string) {
     try {
       return await this.userModel.findOne({ email });
@@ -67,9 +77,19 @@ export class UserService {
     }
   }
 
-  async deletarUser(nome: string) {
+  // !! deprecated because nome cannot be a params for delete (security)
+  // async deletarUser(nome: string) {
+  //   try {
+  //     const userTemp = await this.userModel.findOneAndDelete({ nome });
+  //     return { message: `Usuário ${userTemp.nome} foi deletado.` };
+  //   } catch (e) {
+  //     throw new Error('Usuário não encontrado');
+  //   }
+  // }
+
+  async deletarUserByID(_id: string) {
     try {
-      const userTemp = await this.userModel.findOneAndDelete({ nome });
+      const userTemp = await this.userModel.findOneAndDelete({ _id: _id });
       return { message: `Usuário ${userTemp.nome} foi deletado.` };
     } catch (e) {
       throw new Error('Usuário não encontrado');

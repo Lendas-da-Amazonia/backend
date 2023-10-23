@@ -39,11 +39,11 @@ let UserController = class UserController {
             }
         }
     }
-    async encontrarUser(nome) {
-        return this.userService.encontrarUser(nome);
+    async encontrarUserByID(_id) {
+        return this.userService.encontrarUserByID(_id);
     }
-    async deletarUser(nome) {
-        return this.userService.deletarUser(nome);
+    async deletarUser(_id) {
+        return this.userService.deletarUserByID(_id);
     }
 };
 exports.UserController = UserController;
@@ -64,15 +64,15 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "cadastrarUser", null);
 __decorate([
-    (0, common_1.Get)(':nome'),
-    __param(0, (0, common_1.Param)('nome')),
+    (0, common_1.Get)(':_id'),
+    __param(0, (0, common_1.Param)('_id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
-], UserController.prototype, "encontrarUser", null);
+], UserController.prototype, "encontrarUserByID", null);
 __decorate([
-    (0, common_1.Delete)('delete/:nome'),
-    __param(0, (0, common_1.Param)('nome')),
+    (0, common_1.Delete)('delete/:_id'),
+    __param(0, (0, common_1.Param)('_id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)

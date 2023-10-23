@@ -38,10 +38,13 @@ export declare class UserController {
         status: number;
         message: string;
     }>;
-    encontrarUser(nome: string): Promise<{
+    encontrarUserByID(_id: string): Promise<{
         message: string;
+        buscado: import("mongoose").Document<unknown, {}, import("./schemas/user.schema").UserDocument> & import("./schemas/user.schema").User & import("mongoose").Document<any, any, any> & {
+            _id: import("mongoose").Types.ObjectId;
+        };
     }>;
-    deletarUser(nome: string): Promise<{
+    deletarUser(_id: string): Promise<{
         message: string;
     }>;
 }

@@ -63,6 +63,15 @@ let UserService = class UserService {
             throw new Error('Usuário não encontrado');
         }
     }
+    async encontrarUserByID(_id) {
+        try {
+            const buscado = await this.userModel.findOne({ _id: _id });
+            return { message: `Usuário foi encontrado`, buscado };
+        }
+        catch (e) {
+            throw new Error(e);
+        }
+    }
     async findOneByEmail(email) {
         try {
             return await this.userModel.findOne({ email });
@@ -71,9 +80,9 @@ let UserService = class UserService {
             throw new Error('Usuário não encontrado');
         }
     }
-    async deletarUser(nome) {
+    async deletarUserByID(_id) {
         try {
-            const userTemp = await this.userModel.findOneAndDelete({ nome });
+            const userTemp = await this.userModel.findOneAndDelete({ _id: _id });
             return { message: `Usuário ${userTemp.nome} foi deletado.` };
         }
         catch (e) {

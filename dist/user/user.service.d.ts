@@ -41,10 +41,16 @@ export declare class UserService {
     encontrarUser(nome: string): Promise<{
         message: string;
     }>;
+    encontrarUserByID(_id: string): Promise<{
+        message: string;
+        buscado: import("mongoose").Document<unknown, {}, UserDocument> & User & import("mongoose").Document<any, any, any> & {
+            _id: import("mongoose").Types.ObjectId;
+        };
+    }>;
     findOneByEmail(email: string): Promise<import("mongoose").Document<unknown, {}, UserDocument> & User & import("mongoose").Document<any, any, any> & {
         _id: import("mongoose").Types.ObjectId;
     }>;
-    deletarUser(nome: string): Promise<{
+    deletarUserByID(_id: string): Promise<{
         message: string;
     }>;
 }

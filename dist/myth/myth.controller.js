@@ -32,11 +32,14 @@ let MythController = class MythController {
         const user = this.jwtService.decode(token);
         return this.mythService.createMyth(createMythDto, user._id);
     }
-    async encontrarMyth(titulo) {
-        return this.mythService.findMyth(titulo);
+    async encontrarMythByID(_id) {
+        return this.mythService.findMythByID(_id);
     }
-    async deletarMyth(titulo) {
-        return this.mythService.deleteMyth(titulo);
+    async encontrarMythByAuthor(_id) {
+        return this.mythService.findMythByAuthorID(_id);
+    }
+    async deletarMythByID(_id) {
+        return this.mythService.deleteMyth(_id);
     }
 };
 exports.MythController = MythController;
@@ -59,19 +62,26 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], MythController.prototype, "cadastrarMyth", null);
 __decorate([
-    (0, common_1.Get)(':titulo'),
-    __param(0, (0, common_1.Param)('titulo')),
+    (0, common_1.Get)(':_id'),
+    __param(0, (0, common_1.Param)('_id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
-], MythController.prototype, "encontrarMyth", null);
+], MythController.prototype, "encontrarMythByID", null);
 __decorate([
-    (0, common_1.Delete)('delete/:titulo'),
-    __param(0, (0, common_1.Param)('titulo')),
+    (0, common_1.Get)('/author/:_id'),
+    __param(0, (0, common_1.Param)('_id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
-], MythController.prototype, "deletarMyth", null);
+], MythController.prototype, "encontrarMythByAuthor", null);
+__decorate([
+    (0, common_1.Delete)('delete/:_id'),
+    __param(0, (0, common_1.Param)('_id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], MythController.prototype, "deletarMythByID", null);
 exports.MythController = MythController = __decorate([
     (0, swagger_1.ApiTags)('Myth'),
     (0, common_1.Controller)('myth'),

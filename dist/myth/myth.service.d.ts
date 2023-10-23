@@ -35,6 +35,12 @@ export declare class MythService {
         })[];
     }>;
     createMyth(myth: CreateMythDto, user_id: string): Promise<Myth>;
-    findMyth(titulo: string): Promise<Myth>;
-    deleteMyth(titulo: string): Promise<any>;
+    findMythByID(_id: string): Promise<Myth>;
+    findMythByAuthorID(id_autor: string): Promise<{
+        message: string;
+        mitosDoUser: (import("mongoose").Document<unknown, {}, MythDocument> & Myth & import("mongoose").Document<any, any, any> & {
+            _id: import("mongoose").Types.ObjectId;
+        })[];
+    }>;
+    deleteMyth(_id: string): Promise<any>;
 }
