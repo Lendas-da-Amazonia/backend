@@ -48,7 +48,10 @@ export class MythService {
       const mitosDoUser = await this.mythModel.find({ id_autor });
       console.log(mitosDoUser);
       const quantidade = await this.mythModel.find({ id_autor }).count();
-      return { message: `Foram encontrados ${quantidade} mitos.`, mitosDoUser };
+      return {
+        message: `Foram encontrados ${quantidade} lenda(s).`,
+        mitosDoUser,
+      };
     } catch (e) {
       throw new Error('Usuário não encontrado');
     }
