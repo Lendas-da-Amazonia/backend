@@ -64,6 +64,15 @@ let UserService = class UserService {
             throw new Error('Usuário não encontrado');
         }
     }
+    async encontrarUserByID(_id) {
+        try {
+            const buscado = await this.userModel.findOne({ _id: _id });
+            return { message: `Usuário foi encontrado`, buscado };
+        }
+        catch (e) {
+            throw new Error(e);
+        }
+    }
     async findOneByEmail(email) {
         try {
             return await this.userModel.findOne({ email });

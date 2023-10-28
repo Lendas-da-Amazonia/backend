@@ -42,8 +42,8 @@ let UserController = class UserController {
             }
         }
     }
-    async encontrarUser(nome) {
-        return this.userService.encontrarUser(nome);
+    async encontrarUserByID(_id) {
+        return this.userService.encontrarUserByID(_id);
     }
     async deletarUser(id, req) {
         const token = req.headers.authorization.toString().replace('Bearer ', '');
@@ -76,12 +76,12 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "cadastrarUser", null);
 __decorate([
-    (0, common_1.Get)(':nome'),
-    __param(0, (0, common_1.Param)('nome')),
+    (0, common_1.Get)(':_id'),
+    __param(0, (0, common_1.Param)('_id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
-], UserController.prototype, "encontrarUser", null);
+], UserController.prototype, "encontrarUserByID", null);
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, swagger_1.ApiBearerAuth)(),

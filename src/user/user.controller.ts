@@ -57,9 +57,9 @@ export class UserController {
     }
   }
 
-  @Get(':nome')
-  async encontrarUser(@Param('nome') nome: string) {
-    return this.userService.encontrarUser(nome);
+  @Get(':_id')
+  async encontrarUserByID(@Param('_id') _id: string) {
+    return this.userService.encontrarUserByID(_id);
   }
 
   @UseGuards(JwtAuthGuard)

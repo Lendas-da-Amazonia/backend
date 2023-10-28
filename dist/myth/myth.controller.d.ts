@@ -33,11 +33,17 @@ export declare class MythController {
     constructor(mythService: MythService, jwtService: JwtService);
     listarMyth(): Promise<{
         message: string;
-        myths: (import("mongoose").Document<unknown, {}, import("./schemas/myth.schema").MythDocument> & import("./schemas/myth.schema").Myth & import("mongoose").Document<any, any, any> & {
-            _id: import("mongoose").Types.ObjectId;
-        })[];
+        myths: (import("mongoose").Document<unknown, {}, import("./schemas/myth.schema").MythDocument> & import("./schemas/myth.schema").Myth & Document & Required<{
+            _id: string;
+        }>)[];
     }>;
     cadastrarMyth(req: Request, createMythDto: CreateMythDto): Promise<import("./schemas/myth.schema").Myth>;
-    encontrarMyth(titulo: string): Promise<import("./schemas/myth.schema").Myth>;
-    deletarMyth(titulo: string): Promise<any>;
+    encontrarMythByID(_id: string): Promise<import("./schemas/myth.schema").Myth>;
+    encontrarMythByAuthor(_id: string): Promise<{
+        message: string;
+        mitosDoUser: (import("mongoose").Document<unknown, {}, import("./schemas/myth.schema").MythDocument> & import("./schemas/myth.schema").Myth & Document & Required<{
+            _id: string;
+        }>)[];
+    }>;
+    deletarMythByID(_id: string): Promise<any>;
 }

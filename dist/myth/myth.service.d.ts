@@ -30,11 +30,17 @@ export declare class MythService {
     constructor(mythModel: Model<MythDocument>);
     listarMyth(): Promise<{
         message: string;
-        myths: (import("mongoose").Document<unknown, {}, MythDocument> & Myth & import("mongoose").Document<any, any, any> & {
-            _id: import("mongoose").Types.ObjectId;
-        })[];
+        myths: (import("mongoose").Document<unknown, {}, MythDocument> & Myth & Document & Required<{
+            _id: string;
+        }>)[];
     }>;
     createMyth(myth: CreateMythDto, user_id: string): Promise<Myth>;
-    findMyth(titulo: string): Promise<Myth>;
-    deleteMyth(titulo: string): Promise<any>;
+    findMythByID(_id: string): Promise<Myth>;
+    findMythByAuthorID(id_autor: string): Promise<{
+        message: string;
+        mitosDoUser: (import("mongoose").Document<unknown, {}, MythDocument> & Myth & Document & Required<{
+            _id: string;
+        }>)[];
+    }>;
+    deleteMyth(_id: string): Promise<any>;
 }

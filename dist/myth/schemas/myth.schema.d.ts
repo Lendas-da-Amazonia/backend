@@ -21,8 +21,8 @@
 /// <reference types="mongoose/types/utility" />
 /// <reference types="mongoose/types/validation" />
 /// <reference types="mongoose/types/virtuals" />
+/// <reference types="mongoose" />
 /// <reference types="mongoose/types/inferschematype" />
-import { Document } from 'mongoose';
 export type MythDocument = Myth & Document;
 export declare class Myth {
     _id: string;
@@ -32,8 +32,8 @@ export declare class Myth {
     titulo: string;
     texto: string;
 }
-export declare const MythSchema: import("mongoose").Schema<Myth, import("mongoose").Model<Myth, any, any, any, Document<unknown, any, Myth> & Myth & Required<{
+export declare const MythSchema: import("mongoose").Schema<Myth, import("mongoose").Model<Myth, any, any, any, import("mongoose").Document<unknown, any, Myth> & Myth & Required<{
     _id: string;
-}>, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Myth, Document<unknown, {}, Myth> & Myth & Required<{
+}>, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Myth, import("mongoose").Document<unknown, {}, Myth> & Myth & Required<{
     _id: string;
 }>>;

@@ -43,9 +43,9 @@ export declare class CommentService {
         status: number;
         message: string;
     }>;
-    findOneMythById(id: string): Promise<import("mongoose").Document<unknown, {}, MythDocument> & Myth & import("mongoose").Document<any, any, any> & {
-        _id: import("mongoose").Types.ObjectId;
-    }>;
+    findOneMythById(id: string): Promise<import("mongoose").Document<unknown, {}, MythDocument> & Myth & Document & Required<{
+        _id: string;
+    }>>;
     findOneCommentById(id: string): Promise<(import("mongoose").Document<unknown, {}, CommentDocument> & Comment & import("mongoose").Document<any, any, any> & {
         _id: import("mongoose").Types.ObjectId;
     })[]>;

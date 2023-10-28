@@ -62,6 +62,16 @@ export class UserService {
     }
   }
 
+  async encontrarUserByID(_id: string) {
+    try {
+      const buscado = await this.userModel.findOne({ _id: _id });
+
+      return { message: `Usuário foi encontrado`, buscado };
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
+
   async findOneByEmail(email: string) {
     try {
       return await this.userModel.findOne({ email });
