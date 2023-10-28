@@ -102,11 +102,18 @@ export class CommentService {
       _id: id,
     });
 
+    console.log(comment);
     if (!comment) {
       throw new CommentNotExistsException();
     }
 
-    const permission = await this.checkPermission(id, user_id, user_role);
+    const permission = await this.checkPermission(
+      comment.id_user,
+      user_id,
+      user_role,
+    );
+
+    console.log(permission);
 
     if (!permission) {
       throw new PermissionError();
