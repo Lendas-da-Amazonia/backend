@@ -24,6 +24,10 @@ __decorate([
 ], Comment.prototype, "id_myth", void 0);
 __decorate([
     (0, mongoose_1.Prop)(),
+    __metadata("design:type", Date)
+], Comment.prototype, "created_at", void 0);
+__decorate([
+    (0, mongoose_1.Prop)(),
     __metadata("design:type", String)
 ], Comment.prototype, "text", void 0);
 exports.Comment = Comment = __decorate([

@@ -25,6 +25,7 @@
 import { Model } from 'mongoose';
 import { User, UserDocument } from './schemas/user.schema';
 import { CreateUserDto } from './dto/create-user.dto';
+import { JWTUser } from 'src/auth/interfaces/jwt-user.interface';
 export declare class UserService {
     private userModel;
     constructor(userModel: Model<UserDocument>);
@@ -44,7 +45,8 @@ export declare class UserService {
     findOneByEmail(email: string): Promise<import("mongoose").Document<unknown, {}, UserDocument> & User & import("mongoose").Document<any, any, any> & {
         _id: import("mongoose").Types.ObjectId;
     }>;
-    deletarUser(nome: string): Promise<{
+    deletarUser(id: string, user: JWTUser): Promise<{
         message: string;
     }>;
+    checkPermission(id: string, user_id: string, user_role: string): Promise<boolean>;
 }

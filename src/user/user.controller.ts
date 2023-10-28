@@ -6,22 +6,32 @@ import {
   Param,
   Delete,
   BadRequestException,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { UserService } from './user.service';
+import { Request } from 'express';
 import { CreateUserDto } from './dto/create-user.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { IsPublic } from 'src/auth/decorators/is-public.decorator';
 import {
   InvalidPasswordException,
   InvalidEmailException,
   InvalidNameException,
   EmailAreadyExistsException,
+  PermissionError,
 } from 'src/user/utils/exceptions';
+import { JwtService } from '@nestjs/jwt';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { JWTUser } from 'src/auth/interfaces/jwt-user.interface';
 
 @Controller('user')
 @ApiTags('User')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private jwtService: JwtService,
+  ) {}
 
   @ApiOperation({ description: 'Rota para listar todos os usuários.' })
   @Get()
@@ -52,8 +62,18 @@ export class UserController {
     return this.userService.encontrarUser(nome);
   }
 
-  @Delete('delete/:nome')
-  async deletarUser(@Param('nome') nome: string) {
-    return this.userService.deletarUser(nome);
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @Delete('delete/:id')
+  async deletarUser(@Param('id') id: string, @Req() req: Request) {
+    const token = req.headers.authorization.toString().replace('Bearer ', '');
+    const user = this.jwtService.decode(token) as JWTUser;
+    try {
+      return await this.userService.deletarUser(id, user);
+    } catch (error) {
+      if (error instanceof PermissionError) {
+        throw new BadRequestException(error.message);
+      }
+    }
   }
 }

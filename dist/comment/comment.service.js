@@ -34,25 +34,88 @@ let CommentService = class CommentService {
         if (!comment.mythId) {
             throw new Error('ID da lenda não pode ser vazio');
         }
-        const mythIdExists = await this.findOneByTitle(comment.mythId);
-        console.log(mythIdExists);
-        if (!mythIdExists) {
+        const mythId_exists = await this.findOneMythById(comment.mythId);
+        if (!mythId_exists) {
             throw new exceptions_1.MythNotExistsException();
         }
+        const now = new Date();
+        const AMT_OFFSET = -4;
+        now.setHours(now.getHours() + AMT_OFFSET);
         await this.commentModel.create({
             id_user: user_id,
             id_myth: comment.mythId,
             text: comment.text,
+            created_at: now,
         });
         return { status: 201, message: 'Comentário criado com sucesso!' };
     }
-    async findOneByTitle(title) {
-        console.log(title);
+    async findCommentsByMythId(id) {
         try {
-            return await this.mythModel.findOne({ title });
+            return await this.commentModel.find({ id_myth: id });
         }
         catch (e) {
             throw new Error('Lenda não encontrada aqui');
+        }
+    }
+    async deleteCommentById(id, user_id) {
+        try {
+            const comment = await this.commentModel.findOne({
+                _id: id,
+                id_user: user_id,
+            });
+            if (!comment) {
+                throw new Error('Comentário não encontrado');
+            }
+            await this.commentModel.deleteOne({ _id: id });
+            return { status: 200, message: 'Comentário deletado com sucesso!' };
+        }
+        catch (e) {
+            throw new exceptions_1.CommentNotExistsException();
+        }
+    }
+    async findOneMythById(id) {
+        try {
+            return await this.mythModel.findById({ _id: id });
+        }
+        catch (e) {
+            throw new Error('Lenda não encontrada aqui');
+        }
+    }
+    async findOneCommentById(id) {
+        try {
+            return await this.commentModel.find({ id_user: id });
+        }
+        catch (e) {
+            throw new Error('Comentário não encontrado');
+        }
+    }
+    async editCommentById(id, data, user_id, user_role) {
+        if (id.length < 24) {
+            throw new exceptions_1.CommentNotExistsException();
+        }
+        const comment = await this.commentModel.findOne({
+            _id: id,
+        });
+        if (!comment) {
+            throw new exceptions_1.CommentNotExistsException();
+        }
+        const permission = await this.checkPermission(id, user_id, user_role);
+        if (!permission) {
+            throw new exceptions_1.PermissionError();
+        }
+        comment.text = data.text;
+        comment.save();
+        return { status: 201, message: 'Comentário editado com sucesso!' };
+    }
+    async checkPermission(id, user_id, user_role) {
+        if (user_role == 'admin') {
+            return true;
+        }
+        if (user_id == id) {
+            return true;
+        }
+        else {
+            return false;
         }
     }
 };

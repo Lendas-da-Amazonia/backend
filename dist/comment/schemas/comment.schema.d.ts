@@ -27,6 +27,7 @@ export type CommentDocument = Comment & Document;
 export declare class Comment {
     id_user: string;
     id_myth: string;
+    created_at: Date;
     text: string;
 }
 export declare const CommentSchema: import("mongoose").Schema<Comment, import("mongoose").Model<Comment, any, any, any, Document<unknown, any, Comment> & Comment & {

@@ -2,30 +2,27 @@ import {
   Controller,
   Get,
   Post,
-  Put,
   Delete,
   Body,
   Param,
   UseGuards,
   Req,
   BadRequestException,
+  Patch,
 } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiResponse,
-  ApiBadRequestResponse,
-  ApiBearerAuth,
-  ApiOperation,
-} from '@nestjs/swagger';
+import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { CreateCommentDto } from './dto/create-comment.dto';
-import { UpdateCommentDto } from './dto/update-comment.dto';
-import { ValidationError } from 'class-validator';
+import { EditCommentDto } from './dto/edit-comment.dto';
 import { CommentService } from './comment.service';
 import { Request } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { JWTUser } from 'src/auth/interfaces/jwt-user.interface';
-import { MythNotExistsException } from './dto/utils/exceptions';
+import {
+  CommentNotExistsException,
+  MythNotExistsException,
+  PermissionError,
+} from './dto/utils/exceptions';
 
 @ApiTags('Comment')
 @Controller('comment')
@@ -35,18 +32,21 @@ export class CommentController {
     private jwtService: JwtService,
   ) {}
 
-  //   @Get()
-  //   @ApiResponse({ status: 200, description: 'Retorna todos os comentários.' })
-  //   async findAll(): Promise<Comment[]> {
-  //     return this.commentRepository.find();
-  //   }
+  @ApiOperation({ description: 'Rota para listar comentários de uma lenda' })
+  @Get('myth/:mythId')
+  async listarComentarios(@Param('mythId') mythId: string) {
+    return this.commentService.findCommentsByMythId(mythId);
+  }
 
-  //   @Get(':id')
-  //   @ApiResponse({ status: 200, description: 'Retorna um comentário pelo ID.' })
-  //   @ApiBadRequestResponse({ description: 'ID inválido.' })
-  //   async findOne(@Param('id') id: number): Promise<Comment> {
-  //     return this.commentRepository.findOne(id);
-  //   }
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ description: 'Rota para listar meus comentários' })
+  @Get('my-comments')
+  async listarMeusComentarios(@Req() req: Request) {
+    const token = req.headers.authorization.toString().replace('Bearer ', '');
+    const user = this.jwtService.decode(token) as JWTUser;
+    return this.commentService.findOneCommentById(user._id);
+  }
 
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
@@ -67,28 +67,48 @@ export class CommentController {
     }
   }
 
-  //   @Put(':id')
-  //   @ApiResponse({
-  //     status: 200,
-  //     description: 'Comentário atualizado com sucesso.',
-  //   })
-  //   @ApiBadRequestResponse({
-  //     description: 'Dados inválidos.',
-  //     type: ValidationError,
-  //   })
-  //   async update(
-  //     @Param('id') id: number,
-  //     @Body() updateCommentDto: UpdateCommentDto,
-  //   ): Promise<Comment> {
-  //     const comment = await this.commentRepository.findOne(id);
-  //     this.commentRepository.merge(comment, updateCommentDto);
-  //     return this.commentRepository.save(comment);
-  //   }
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ description: 'Rota para editar um comentário' })
+  @Patch(':commentId/edit')
+  async editComment(
+    @Param('commentId') commentId: string,
+    @Body() data: EditCommentDto,
+    @Req() req: Request,
+  ) {
+    const token = req.headers.authorization.toString().replace('Bearer ', '');
+    const user = this.jwtService.decode(token) as JWTUser;
 
-  //   @Delete(':id')
-  //   @ApiResponse({ status: 200, description: 'Comentário deletado com sucesso.' })
-  //   @ApiBadRequestResponse({ description: 'ID inválido.' })
-  //   async delete(@Param('id') id: number): Promise<void> {
-  //     await this.commentRepository.delete(id);
-  //   }
+    try {
+      return this.commentService.editCommentById(
+        commentId,
+        data,
+        user._id,
+        user.role,
+      );
+    } catch (error) {
+      if (error instanceof CommentNotExistsException || PermissionError) {
+        throw new BadRequestException(error.message);
+      }
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ description: 'Rota para deletar um comentário na lenda' })
+  @Delete(':commentId/delete')
+  async deleteComment(
+    @Param('commentId') commentId: string,
+    @Req() req: Request,
+  ) {
+    const token = req.headers.authorization.toString().replace('Bearer ', '');
+    const user = this.jwtService.decode(token) as JWTUser;
+    try {
+      return this.commentService.deleteCommentById(commentId, user._id);
+    } catch (error) {
+      if (error instanceof CommentNotExistsException) {
+        throw new BadRequestException(error.message);
+      }
+    }
+  }
 }

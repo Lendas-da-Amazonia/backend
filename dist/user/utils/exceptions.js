@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.InvalidStudentParametersException = exports.WrongPasswordException = exports.OldPasswordNotProvidedException = exports.EnrollmentAlreadyExistsException = exports.InvalidWhatsAppNumberException = exports.InvalidLinkedinURLException = exports.PasswordsDoNotMatchException = exports.PersonalDataInPasswordException = exports.InvalidEnrollmentException = exports.CourseNotFoundException = exports.ContactEmailAreadyExistsException = exports.EmailAreadyExistsException = exports.InvalidContactEmailException = exports.InvalidEmailException = exports.InvalidNameException = exports.MissingFieldsException = exports.UsedCodeException = exports.ExpiredCodeException = exports.InvalidTokenException = exports.InvalidCodeException = exports.InvalidPasswordException = exports.ValidResetPasswordTokenFoundException = exports.UserNotFoundException = void 0;
+exports.PermissionError = exports.InvalidStudentParametersException = exports.WrongPasswordException = exports.OldPasswordNotProvidedException = exports.EnrollmentAlreadyExistsException = exports.InvalidWhatsAppNumberException = exports.InvalidLinkedinURLException = exports.PasswordsDoNotMatchException = exports.PersonalDataInPasswordException = exports.InvalidEnrollmentException = exports.CourseNotFoundException = exports.ContactEmailAreadyExistsException = exports.EmailAreadyExistsException = exports.InvalidContactEmailException = exports.InvalidEmailException = exports.InvalidNameException = exports.MissingFieldsException = exports.UsedCodeException = exports.ExpiredCodeException = exports.InvalidTokenException = exports.InvalidCodeException = exports.InvalidPasswordException = exports.ValidResetPasswordTokenFoundException = exports.UserNotFoundException = void 0;
 class UserNotFoundException extends Error {
     constructor() {
         super();
@@ -166,4 +166,11 @@ class InvalidStudentParametersException extends Error {
     }
 }
 exports.InvalidStudentParametersException = InvalidStudentParametersException;
+class PermissionError extends Error {
+    constructor() {
+        super();
+        this.message = 'Você não tem permissão para deletar este usuário!';
+    }
+}
+exports.PermissionError = PermissionError;
 //# sourceMappingURL=exceptions.js.map

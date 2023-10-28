@@ -26,6 +26,7 @@ import { Comment, CommentDocument } from './schemas/comment.schema';
 import { Model } from 'mongoose';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { Myth, MythDocument } from 'src/myth/schemas/myth.schema';
+import { EditCommentDto } from './dto/edit-comment.dto';
 export declare class CommentService {
     private commentModel;
     private mythModel;
@@ -35,7 +36,22 @@ export declare class CommentService {
         status: number;
         message: string;
     }>;
-    findOneByTitle(title: string): Promise<import("mongoose").Document<unknown, {}, MythDocument> & Myth & import("mongoose").Document<any, any, any> & {
+    findCommentsByMythId(id: string): Promise<(import("mongoose").Document<unknown, {}, CommentDocument> & Comment & import("mongoose").Document<any, any, any> & {
+        _id: import("mongoose").Types.ObjectId;
+    })[]>;
+    deleteCommentById(id: string, user_id: string): Promise<{
+        status: number;
+        message: string;
+    }>;
+    findOneMythById(id: string): Promise<import("mongoose").Document<unknown, {}, MythDocument> & Myth & import("mongoose").Document<any, any, any> & {
         _id: import("mongoose").Types.ObjectId;
     }>;
+    findOneCommentById(id: string): Promise<(import("mongoose").Document<unknown, {}, CommentDocument> & Comment & import("mongoose").Document<any, any, any> & {
+        _id: import("mongoose").Types.ObjectId;
+    })[]>;
+    editCommentById(id: string, data: EditCommentDto, user_id: string, user_role: string): Promise<{
+        status: number;
+        message: string;
+    }>;
+    checkPermission(id: string, user_id: string, user_role: string): Promise<boolean>;
 }

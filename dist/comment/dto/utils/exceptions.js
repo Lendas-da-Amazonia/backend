@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MythNotExistsException = exports.CommentNotFoundException = void 0;
+exports.PermissionError = exports.CommentNotExistsException = exports.MythNotExistsException = exports.CommentNotFoundException = void 0;
 class CommentNotFoundException extends Error {
     constructor(commentId) {
         super(`Comment with id ${commentId} not found`);
@@ -15,4 +15,18 @@ class MythNotExistsException extends Error {
     }
 }
 exports.MythNotExistsException = MythNotExistsException;
+class CommentNotExistsException extends Error {
+    constructor() {
+        super();
+        this.name = 'Comentário não foi encontrado';
+    }
+}
+exports.CommentNotExistsException = CommentNotExistsException;
+class PermissionError extends Error {
+    constructor() {
+        super();
+        this.name = 'Você não tem permissão para editar esse comentário';
+    }
+}
+exports.PermissionError = PermissionError;
 //# sourceMappingURL=exceptions.js.map

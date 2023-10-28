@@ -16,6 +16,7 @@ exports.CommentController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const create_comment_dto_1 = require("./dto/create-comment.dto");
+const edit_comment_dto_1 = require("./dto/edit-comment.dto");
 const comment_service_1 = require("./comment.service");
 const jwt_1 = require("@nestjs/jwt");
 const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
@@ -24,6 +25,14 @@ let CommentController = class CommentController {
     constructor(commentService, jwtService) {
         this.commentService = commentService;
         this.jwtService = jwtService;
+    }
+    async listarComentarios(mythId) {
+        return this.commentService.findCommentsByMythId(mythId);
+    }
+    async listarMeusComentarios(req) {
+        const token = req.headers.authorization.toString().replace('Bearer ', '');
+        const user = this.jwtService.decode(token);
+        return this.commentService.findOneCommentById(user._id);
     }
     async createComment(req, createCommentDto) {
         const token = req.headers.authorization.toString().replace('Bearer ', '');
@@ -37,8 +46,50 @@ let CommentController = class CommentController {
             }
         }
     }
+    async editComment(commentId, data, req) {
+        const token = req.headers.authorization.toString().replace('Bearer ', '');
+        const user = this.jwtService.decode(token);
+        try {
+            return this.commentService.editCommentById(commentId, data, user._id, user.role);
+        }
+        catch (error) {
+            if (error instanceof exceptions_1.CommentNotExistsException || exceptions_1.PermissionError) {
+                throw new common_1.BadRequestException(error.message);
+            }
+        }
+    }
+    async deleteComment(commentId, req) {
+        const token = req.headers.authorization.toString().replace('Bearer ', '');
+        const user = this.jwtService.decode(token);
+        try {
+            return this.commentService.deleteCommentById(commentId, user._id);
+        }
+        catch (error) {
+            if (error instanceof exceptions_1.CommentNotExistsException) {
+                throw new common_1.BadRequestException(error.message);
+            }
+        }
+    }
 };
 exports.CommentController = CommentController;
+__decorate([
+    (0, swagger_1.ApiOperation)({ description: 'Rota para listar comentários de uma lenda' }),
+    (0, common_1.Get)('myth/:mythId'),
+    __param(0, (0, common_1.Param)('mythId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], CommentController.prototype, "listarComentarios", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ description: 'Rota para listar meus comentários' }),
+    (0, common_1.Get)('my-comments'),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], CommentController.prototype, "listarMeusComentarios", null);
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, swagger_1.ApiBearerAuth)(),
@@ -50,9 +101,32 @@ __decorate([
     __metadata("design:paramtypes", [Object, create_comment_dto_1.CreateCommentDto]),
     __metadata("design:returntype", Promise)
 ], CommentController.prototype, "createComment", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ description: 'Rota para editar um comentário' }),
+    (0, common_1.Patch)(':commentId/edit'),
+    __param(0, (0, common_1.Param)('commentId')),
+    __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, edit_comment_dto_1.EditCommentDto, Object]),
+    __metadata("design:returntype", Promise)
+], CommentController.prototype, "editComment", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ description: 'Rota para deletar um comentário na lenda' }),
+    (0, common_1.Delete)(':commentId/delete'),
+    __param(0, (0, common_1.Param)('commentId')),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], CommentController.prototype, "deleteComment", null);
 exports.CommentController = CommentController = __decorate([
-    (0, swagger_1.ApiTags)('comments'),
-    (0, common_1.Controller)('comments'),
+    (0, swagger_1.ApiTags)('Comment'),
+    (0, common_1.Controller)('comment'),
     __metadata("design:paramtypes", [comment_service_1.CommentService,
         jwt_1.JwtService])
 ], CommentController);

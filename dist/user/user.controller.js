@@ -19,9 +19,12 @@ const create_user_dto_1 = require("./dto/create-user.dto");
 const swagger_1 = require("@nestjs/swagger");
 const is_public_decorator_1 = require("../auth/decorators/is-public.decorator");
 const exceptions_1 = require("./utils/exceptions");
+const jwt_1 = require("@nestjs/jwt");
+const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
 let UserController = class UserController {
-    constructor(userService) {
+    constructor(userService, jwtService) {
         this.userService = userService;
+        this.jwtService = jwtService;
     }
     async listarUser() {
         return this.userService.listarUser();
@@ -42,8 +45,17 @@ let UserController = class UserController {
     async encontrarUser(nome) {
         return this.userService.encontrarUser(nome);
     }
-    async deletarUser(nome) {
-        return this.userService.deletarUser(nome);
+    async deletarUser(id, req) {
+        const token = req.headers.authorization.toString().replace('Bearer ', '');
+        const user = this.jwtService.decode(token);
+        try {
+            return await this.userService.deletarUser(id, user);
+        }
+        catch (error) {
+            if (error instanceof exceptions_1.PermissionError) {
+                throw new common_1.BadRequestException(error.message);
+            }
+        }
     }
 };
 exports.UserController = UserController;
@@ -71,15 +83,19 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "encontrarUser", null);
 __decorate([
-    (0, common_1.Delete)('delete/:nome'),
-    __param(0, (0, common_1.Param)('nome')),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, common_1.Delete)('delete/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "deletarUser", null);
 exports.UserController = UserController = __decorate([
     (0, common_1.Controller)('user'),
     (0, swagger_1.ApiTags)('User'),
-    __metadata("design:paramtypes", [user_service_1.UserService])
+    __metadata("design:paramtypes", [user_service_1.UserService,
+        jwt_1.JwtService])
 ], UserController);
 //# sourceMappingURL=user.controller.js.map

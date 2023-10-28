@@ -162,3 +162,10 @@ export class InvalidStudentParametersException extends Error {
     });
   }
 }
+
+export class PermissionError extends Error {
+  constructor() {
+    super();
+    this.message = 'Você não tem permissão para deletar este usuário!';
+  }
+}

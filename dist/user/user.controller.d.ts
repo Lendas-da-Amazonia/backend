@@ -24,10 +24,13 @@
 /// <reference types="mongoose" />
 /// <reference types="mongoose/types/inferschematype" />
 import { UserService } from './user.service';
+import { Request } from 'express';
 import { CreateUserDto } from './dto/create-user.dto';
+import { JwtService } from '@nestjs/jwt';
 export declare class UserController {
     private readonly userService;
-    constructor(userService: UserService);
+    private jwtService;
+    constructor(userService: UserService, jwtService: JwtService);
     listarUser(): Promise<{
         message: string;
         encontrados: (import("mongoose").Document<unknown, {}, import("./schemas/user.schema").UserDocument> & import("./schemas/user.schema").User & import("mongoose").Document<any, any, any> & {
@@ -41,7 +44,7 @@ export declare class UserController {
     encontrarUser(nome: string): Promise<{
         message: string;
     }>;
-    deletarUser(nome: string): Promise<{
+    deletarUser(id: string, req: Request): Promise<{
         message: string;
     }>;
 }

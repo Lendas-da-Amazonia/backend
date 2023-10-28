@@ -11,3 +11,17 @@ export class MythNotExistsException extends Error {
     this.name = 'Essa Lenda não existe';
   }
 }
+
+export class CommentNotExistsException extends Error {
+  constructor() {
+    super();
+    this.name = 'Comentário não foi encontrado';
+  }
+}
+
+export class PermissionError extends Error {
+  constructor() {
+    super();
+    this.name = 'Você não tem permissão para editar esse comentário';
+  }
+}

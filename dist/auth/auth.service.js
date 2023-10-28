@@ -26,6 +26,7 @@ let AuthService = class AuthService {
                 _id: user._id,
                 username: user.nome,
                 email: user.email,
+                role: user.role,
             };
         }
         throw new common_1.UnauthorizedException('Usuário(a) ou senha inválidos.');
@@ -34,8 +35,9 @@ let AuthService = class AuthService {
         const user = await this.validateUser(data.email, data.password);
         const payload = {
             _id: user._id,
-            username: user.nome,
+            username: user.username,
             email: user.email,
+            role: user.role,
         };
         return {
             access_token: this.jwtService.sign(payload),

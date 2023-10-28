@@ -67,3 +67,6 @@ export declare class WrongPasswordException extends Error {
 export declare class InvalidStudentParametersException extends Error {
     constructor(paramArray: Array<any>);
 }
+export declare class PermissionError extends Error {
+    constructor();
+}

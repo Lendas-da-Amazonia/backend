@@ -12,6 +12,9 @@ export class Comment {
   id_myth: string;
 
   @Prop()
+  created_at: Date;
+
+  @Prop()
   text: string;
 }
 

@@ -51,6 +51,7 @@ let UserService = class UserService {
             email: createUserDto.email,
             nome: validations_1.Validations.capitalizeName(createUserDto.nome),
             senha: await (0, bcrypt_1.hashPassword)(createUserDto.senha),
+            role: 'user',
         });
         return { status: 201, message: 'Cadastrado com sucesso!' };
     }
@@ -71,14 +72,22 @@ let UserService = class UserService {
             throw new Error('Usuário não encontrado');
         }
     }
-    async deletarUser(nome) {
-        try {
-            const userTemp = await this.userModel.findOneAndDelete({ nome });
-            return { message: `Usuário ${userTemp.nome} foi deletado.` };
+    async deletarUser(id, user) {
+        const permission = await this.checkPermission(id, user._id, user.role);
+        if (!permission) {
+            throw new exceptions_1.PermissionError();
         }
-        catch (e) {
-            throw new Error('Usuário não encontrado');
+        const userTemp = await this.userModel.findOneAndDelete({ _id: id });
+        return { message: `Usuário ${userTemp.nome} foi deletado.` };
+    }
+    async checkPermission(id, user_id, user_role) {
+        if (user_role == 'admin') {
+            return true;
         }
+        if (user_id == id) {
+            return true;
+        }
+        return false;
     }
 };
 exports.UserService = UserService;

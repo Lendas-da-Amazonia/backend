@@ -25,14 +25,15 @@
 import { Document } from 'mongoose';
 export type MythDocument = Myth & Document;
 export declare class Myth {
+    _id: string;
     id_autor: string;
     created_at: Date;
     update_at: Date;
     titulo: string;
     texto: string;
 }
-export declare const MythSchema: import("mongoose").Schema<Myth, import("mongoose").Model<Myth, any, any, any, Document<unknown, any, Myth> & Myth & {
-    _id: import("mongoose").Types.ObjectId;
-}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Myth, Document<unknown, {}, Myth> & Myth & {
-    _id: import("mongoose").Types.ObjectId;
-}>;
+export declare const MythSchema: import("mongoose").Schema<Myth, import("mongoose").Model<Myth, any, any, any, Document<unknown, any, Myth> & Myth & Required<{
+    _id: string;
+}>, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Myth, Document<unknown, {}, Myth> & Myth & Required<{
+    _id: string;
+}>>;

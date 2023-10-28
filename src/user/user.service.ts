@@ -9,8 +9,10 @@ import {
   InvalidEmailException,
   InvalidNameException,
   InvalidPasswordException,
+  PermissionError,
 } from './utils/exceptions';
 import { hashPassword } from 'src/utils/bcrypt';
+import { JWTUser } from 'src/auth/interfaces/jwt-user.interface';
 
 @Injectable()
 export class UserService {
@@ -45,6 +47,7 @@ export class UserService {
       email: createUserDto.email,
       nome: Validations.capitalizeName(createUserDto.nome),
       senha: await hashPassword(createUserDto.senha),
+      role: 'user',
     });
 
     return { status: 201, message: 'Cadastrado com sucesso!' };
@@ -67,12 +70,23 @@ export class UserService {
     }
   }
 
-  async deletarUser(nome: string) {
-    try {
-      const userTemp = await this.userModel.findOneAndDelete({ nome });
-      return { message: `Usuário ${userTemp.nome} foi deletado.` };
-    } catch (e) {
-      throw new Error('Usuário não encontrado');
+  async deletarUser(id: string, user: JWTUser) {
+    const permission = await this.checkPermission(id, user._id, user.role);
+
+    if (!permission) {
+      throw new PermissionError();
     }
+
+    const userTemp = await this.userModel.findOneAndDelete({ _id: id });
+    return { message: `Usuário ${userTemp.nome} foi deletado.` };
+  }
+  async checkPermission(id: string, user_id: string, user_role: string) {
+    if (user_role == 'admin') {
+      return true;
+    }
+    if (user_id == id) {
+      return true;
+    }
+    return false;
   }
 }

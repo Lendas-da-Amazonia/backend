@@ -5,6 +5,8 @@ export type MythDocument = Myth & Document;
 
 @Schema({ collection: 'lendas' })
 export class Myth {
+  _id: string;
+
   @Prop()
   id_autor: string;
 
