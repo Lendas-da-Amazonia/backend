@@ -95,7 +95,8 @@ let MythService = class MythService {
         if (!permission) {
             throw new exceptions_1.PermissionError();
         }
-        return await this.mythModel.findOneAndDelete({ _id: _id }).exec();
+        await this.mythModel.findOneAndDelete({ _id: _id }).exec();
+        return { message: `Lenda ${myth.titulo} foi deletada.` };
     }
     async checkPermission(id, user_id, user_role) {
         if (user_role == 'admin') {

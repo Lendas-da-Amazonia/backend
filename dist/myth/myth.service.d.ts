@@ -48,8 +48,8 @@ export declare class MythService {
         status: number;
         message: string;
     }>;
-    deleteMyth(_id: string, user: JWTUser): Promise<import("mongoose").Document<unknown, {}, MythDocument> & Myth & Document & Required<{
-        _id: string;
-    }>>;
+    deleteMyth(_id: string, user: JWTUser): Promise<{
+        message: string;
+    }>;
     checkPermission(id: string, user_id: string, user_role: string): Promise<boolean>;
 }

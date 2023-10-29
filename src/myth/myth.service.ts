@@ -99,8 +99,8 @@ export class MythService {
     if (!permission) {
       throw new PermissionError();
     }
-
-    return await this.mythModel.findOneAndDelete({ _id: _id }).exec();
+    await this.mythModel.findOneAndDelete({ _id: _id }).exec();
+    return { message: `Lenda ${myth.titulo} foi deletada.` };
   }
 
   async checkPermission(id: string, user_id: string, user_role: string) {
