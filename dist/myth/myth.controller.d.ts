@@ -27,6 +27,7 @@ import { MythService } from './myth.service';
 import { CreateMythDto } from './dto/create-myth.dto';
 import { Request } from 'express';
 import { JwtService } from '@nestjs/jwt';
+import { EditMythDto } from './dto/edit-myth.dto';
 export declare class MythController {
     private readonly mythService;
     private jwtService;
@@ -44,6 +45,10 @@ export declare class MythController {
         mitosDoUser: (import("mongoose").Document<unknown, {}, import("./schemas/myth.schema").MythDocument> & import("./schemas/myth.schema").Myth & Document & Required<{
             _id: string;
         }>)[];
+    }>;
+    editarMyth(req: Request, mythId: string, editMythDto: EditMythDto): Promise<{
+        status: number;
+        message: string;
     }>;
     deletarMythByID(_id: string, req: Request): Promise<import("mongoose").Document<unknown, {}, import("./schemas/myth.schema").MythDocument> & import("./schemas/myth.schema").Myth & Document & Required<{
         _id: string;

@@ -96,12 +96,10 @@ let CommentService = class CommentService {
         const comment = await this.commentModel.findOne({
             _id: id,
         });
-        console.log(comment);
         if (!comment) {
             throw new exceptions_1.CommentNotExistsException();
         }
         const permission = await this.checkPermission(comment.id_user, user_id, user_role);
-        console.log(permission);
         if (!permission) {
             throw new exceptions_1.PermissionError();
         }

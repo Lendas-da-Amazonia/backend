@@ -8,6 +8,7 @@ import {
   UseGuards,
   Req,
   BadRequestException,
+  Patch,
 } from '@nestjs/common';
 import { MythService } from './myth.service';
 import { CreateMythDto } from './dto/create-myth.dto';
@@ -17,6 +18,7 @@ import { JwtService } from '@nestjs/jwt';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { JWTUser } from 'src/auth/interfaces/jwt-user.interface';
 import { MythNotFound, PermissionError } from './utils/exceptions';
+import { EditMythDto } from './dto/edit-myth.dto';
 
 @ApiTags('Myth')
 @Controller('myth')
@@ -55,6 +57,26 @@ export class MythController {
   @Get('/author/:_id')
   async encontrarMythByAuthor(@Param('_id') _id: string) {
     return this.mythService.findMythByAuthorID(_id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ description: 'Rota para editar uma lenda' })
+  @Patch(':mythId/edit')
+  async editarMyth(
+    @Req() req: Request,
+    @Param('mythId') mythId: string,
+    @Body() editMythDto: EditMythDto,
+  ) {
+    const token = req.headers.authorization.toString().replace('Bearer ', '');
+    const user = this.jwtService.decode(token) as JWTUser;
+    try {
+      return await this.mythService.editMyth(mythId, editMythDto, user);
+    } catch (error) {
+      if (error instanceof MythNotFound || error instanceof PermissionError) {
+        throw new BadRequestException(error.message);
+      }
+    }
   }
 
   @UseGuards(JwtAuthGuard)

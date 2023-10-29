@@ -57,6 +57,7 @@ export class UserController {
     }
   }
 
+  @ApiOperation({ description: 'Rota para buscar usuário por id' })
   @Get(':_id')
   async encontrarUserByID(@Param('_id') _id: string) {
     return this.userService.encontrarUserByID(_id);

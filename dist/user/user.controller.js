@@ -76,6 +76,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "cadastrarUser", null);
 __decorate([
+    (0, swagger_1.ApiOperation)({ description: 'Rota para buscar usuário por id' }),
     (0, common_1.Get)(':_id'),
     __param(0, (0, common_1.Param)('_id')),
     __metadata("design:type", Function),

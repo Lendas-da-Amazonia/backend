@@ -26,6 +26,7 @@ import { Model } from 'mongoose';
 import { Myth, MythDocument } from './schemas/myth.schema';
 import { CreateMythDto } from './dto/create-myth.dto';
 import { JWTUser } from 'src/auth/interfaces/jwt-user.interface';
+import { EditMythDto } from './dto/edit-myth.dto';
 export declare class MythService {
     private mythModel;
     constructor(mythModel: Model<MythDocument>);
@@ -42,6 +43,10 @@ export declare class MythService {
         mitosDoUser: (import("mongoose").Document<unknown, {}, MythDocument> & Myth & Document & Required<{
             _id: string;
         }>)[];
+    }>;
+    editMyth(_id: string, myth: EditMythDto, user: JWTUser): Promise<{
+        status: number;
+        message: string;
     }>;
     deleteMyth(_id: string, user: JWTUser): Promise<import("mongoose").Document<unknown, {}, MythDocument> & Myth & Document & Required<{
         _id: string;

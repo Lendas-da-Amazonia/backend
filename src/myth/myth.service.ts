@@ -5,6 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { CreateMythDto } from './dto/create-myth.dto';
 import { JWTUser } from 'src/auth/interfaces/jwt-user.interface';
 import { MythNotFound, PermissionError } from './utils/exceptions';
+import { EditMythDto } from './dto/edit-myth.dto';
 
 @Injectable()
 export class MythService {
@@ -36,11 +37,6 @@ export class MythService {
     return createdMyth.save();
   }
 
-  // !! deprecated, _id has main priority
-  // async findMyth(titulo: string): Promise<Myth> {
-  //   return this.mythModel.findOne({ titulo }).exec();
-  // }
-
   async findMythByID(_id: string): Promise<Myth> {
     return this.mythModel.findOne({ _id }).exec();
   }
@@ -59,6 +55,33 @@ export class MythService {
     }
   }
 
+  async editMyth(_id: string, myth: EditMythDto, user: JWTUser) {
+    if (_id.length != 24) {
+      throw new MythNotFound();
+    }
+    const mythExists = await this.mythModel.findOne({ _id: _id });
+    if (!mythExists) {
+      throw new MythNotFound();
+    }
+    const permission = await this.checkPermission(
+      mythExists.id_autor,
+      user._id,
+      user.role,
+    );
+    if (!permission) {
+      throw new PermissionError();
+    }
+
+    if (myth.titulo != null) {
+      mythExists.titulo = myth.titulo;
+    }
+    if (myth.texto != null) {
+      mythExists.texto = myth.texto;
+    }
+    mythExists.save();
+
+    return { status: 201, message: 'Lenda editada com sucesso!' };
+  }
   async deleteMyth(_id: string, user: JWTUser) {
     if (_id.length != 24) {
       throw new MythNotFound();
@@ -67,7 +90,11 @@ export class MythService {
     if (!myth) {
       throw new MythNotFound();
     }
-    const permission = await this.checkPermission(_id, user._id, user.role);
+    const permission = await this.checkPermission(
+      myth.id_autor,
+      user._id,
+      user.role,
+    );
 
     if (!permission) {
       throw new PermissionError();

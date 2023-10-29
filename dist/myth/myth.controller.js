@@ -20,6 +20,7 @@ const swagger_1 = require("@nestjs/swagger");
 const jwt_1 = require("@nestjs/jwt");
 const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
 const exceptions_1 = require("./utils/exceptions");
+const edit_myth_dto_1 = require("./dto/edit-myth.dto");
 let MythController = class MythController {
     constructor(mythService, jwtService) {
         this.mythService = mythService;
@@ -38,6 +39,18 @@ let MythController = class MythController {
     }
     async encontrarMythByAuthor(_id) {
         return this.mythService.findMythByAuthorID(_id);
+    }
+    async editarMyth(req, mythId, editMythDto) {
+        const token = req.headers.authorization.toString().replace('Bearer ', '');
+        const user = this.jwtService.decode(token);
+        try {
+            return await this.mythService.editMyth(mythId, editMythDto, user);
+        }
+        catch (error) {
+            if (error instanceof exceptions_1.MythNotFound || error instanceof exceptions_1.PermissionError) {
+                throw new common_1.BadRequestException(error.message);
+            }
+        }
     }
     async deletarMythByID(_id, req) {
         const token = req.headers.authorization.toString().replace('Bearer ', '');
@@ -87,6 +100,18 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], MythController.prototype, "encontrarMythByAuthor", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ description: 'Rota para editar uma lenda' }),
+    (0, common_1.Patch)(':mythId/edit'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Param)('mythId')),
+    __param(2, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String, edit_myth_dto_1.EditMythDto]),
+    __metadata("design:returntype", Promise)
+], MythController.prototype, "editarMyth", null);
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, swagger_1.ApiBearerAuth)(),

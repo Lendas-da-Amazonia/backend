@@ -102,7 +102,6 @@ export class CommentService {
       _id: id,
     });
 
-    console.log(comment);
     if (!comment) {
       throw new CommentNotExistsException();
     }
@@ -112,8 +111,6 @@ export class CommentService {
       user_id,
       user_role,
     );
-
-    console.log(permission);
 
     if (!permission) {
       throw new PermissionError();

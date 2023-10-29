@@ -62,6 +62,27 @@ let MythService = class MythService {
             throw new Error('Usuário não encontrado');
         }
     }
+    async editMyth(_id, myth, user) {
+        if (_id.length != 24) {
+            throw new exceptions_1.MythNotFound();
+        }
+        const mythExists = await this.mythModel.findOne({ _id: _id });
+        if (!mythExists) {
+            throw new exceptions_1.MythNotFound();
+        }
+        const permission = await this.checkPermission(mythExists.id_autor, user._id, user.role);
+        if (!permission) {
+            throw new exceptions_1.PermissionError();
+        }
+        if (myth.titulo != null) {
+            mythExists.titulo = myth.titulo;
+        }
+        if (myth.texto != null) {
+            mythExists.texto = myth.texto;
+        }
+        mythExists.save();
+        return { status: 201, message: 'Lenda editada com sucesso!' };
+    }
     async deleteMyth(_id, user) {
         if (_id.length != 24) {
             throw new exceptions_1.MythNotFound();
@@ -70,7 +91,7 @@ let MythService = class MythService {
         if (!myth) {
             throw new exceptions_1.MythNotFound();
         }
-        const permission = await this.checkPermission(_id, user._id, user.role);
+        const permission = await this.checkPermission(myth.id_autor, user._id, user.role);
         if (!permission) {
             throw new exceptions_1.PermissionError();
         }
