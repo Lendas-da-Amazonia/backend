@@ -7,6 +7,7 @@ import {
   Delete,
   UseGuards,
   Req,
+  BadRequestException,
 } from '@nestjs/common';
 import { MythService } from './myth.service';
 import { CreateMythDto } from './dto/create-myth.dto';
@@ -15,6 +16,7 @@ import { Request } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { JWTUser } from 'src/auth/interfaces/jwt-user.interface';
+import { MythNotFound, PermissionError } from './utils/exceptions';
 
 @ApiTags('Myth')
 @Controller('myth')
@@ -43,29 +45,30 @@ export class MythController {
     return this.mythService.createMyth(createMythDto, user._id);
   }
 
-  // !! deprecated, _id has main priority
-  // @Get(':titulo')
-  // async encontrarMyth(@Param('titulo') titulo: string) {
-  //   return this.mythService.findMyth(titulo);
-  // }
-
+  @ApiOperation({ description: 'Rota para buscar lenda por id' })
   @Get(':_id')
   async encontrarMythByID(@Param('_id') _id: string) {
     return this.mythService.findMythByID(_id);
   }
 
+  @ApiOperation({ description: 'Rota para buscar lenda pelo id do autor' })
   @Get('/author/:_id')
   async encontrarMythByAuthor(@Param('_id') _id: string) {
     return this.mythService.findMythByAuthorID(_id);
   }
 
-  // @Delete('delete/:titulo')
-  // async deletarMyth(@Param('titulo') titulo: string) {
-  //   return this.mythService.deleteMyth(titulo);
-  // }
-
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Delete('delete/:_id')
-  async deletarMythByID(@Param('_id') _id: string) {
-    return this.mythService.deleteMyth(_id);
+  async deletarMythByID(@Param('_id') _id: string, @Req() req: Request) {
+    const token = req.headers.authorization.toString().replace('Bearer ', '');
+    const user = this.jwtService.decode(token) as JWTUser;
+    try {
+      return await this.mythService.deleteMyth(_id, user);
+    } catch (error) {
+      if (error instanceof MythNotFound || error instanceof PermissionError) {
+        throw new BadRequestException(error.message);
+      }
+    }
   }
 }

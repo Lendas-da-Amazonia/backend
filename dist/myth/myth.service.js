@@ -17,6 +17,7 @@ const mongoose_1 = require("mongoose");
 const myth_schema_1 = require("./schemas/myth.schema");
 const common_1 = require("@nestjs/common");
 const mongoose_2 = require("@nestjs/mongoose");
+const exceptions_1 = require("./utils/exceptions");
 let MythService = class MythService {
     constructor(mythModel) {
         this.mythModel = mythModel;
@@ -61,8 +62,30 @@ let MythService = class MythService {
             throw new Error('Usuário não encontrado');
         }
     }
-    async deleteMyth(_id) {
-        return this.mythModel.findOneAndDelete({ _id: _id }).exec();
+    async deleteMyth(_id, user) {
+        if (_id.length != 24) {
+            throw new exceptions_1.MythNotFound();
+        }
+        const myth = await this.mythModel.findOne({ _id: _id });
+        if (!myth) {
+            throw new exceptions_1.MythNotFound();
+        }
+        const permission = await this.checkPermission(_id, user._id, user.role);
+        if (!permission) {
+            throw new exceptions_1.PermissionError();
+        }
+        return await this.mythModel.findOneAndDelete({ _id: _id }).exec();
+    }
+    async checkPermission(id, user_id, user_role) {
+        if (user_role == 'admin') {
+            return true;
+        }
+        if (user_id == id) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 };
 exports.MythService = MythService;

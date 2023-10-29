@@ -3,6 +3,8 @@ import { Myth, MythDocument } from './schemas/myth.schema';
 import { PreconditionFailedException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateMythDto } from './dto/create-myth.dto';
+import { JWTUser } from 'src/auth/interfaces/jwt-user.interface';
+import { MythNotFound, PermissionError } from './utils/exceptions';
 
 @Injectable()
 export class MythService {
@@ -57,7 +59,31 @@ export class MythService {
     }
   }
 
-  async deleteMyth(_id: string): Promise<any> {
-    return this.mythModel.findOneAndDelete({ _id: _id }).exec();
+  async deleteMyth(_id: string, user: JWTUser) {
+    if (_id.length != 24) {
+      throw new MythNotFound();
+    }
+    const myth = await this.mythModel.findOne({ _id: _id });
+    if (!myth) {
+      throw new MythNotFound();
+    }
+    const permission = await this.checkPermission(_id, user._id, user.role);
+
+    if (!permission) {
+      throw new PermissionError();
+    }
+
+    return await this.mythModel.findOneAndDelete({ _id: _id }).exec();
+  }
+
+  async checkPermission(id: string, user_id: string, user_role: string) {
+    if (user_role == 'admin') {
+      return true;
+    }
+    if (user_id == id) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

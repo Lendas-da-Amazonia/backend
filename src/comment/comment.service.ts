@@ -7,7 +7,7 @@ import {
   CommentNotExistsException,
   MythNotExistsException,
   PermissionError,
-} from './dto/utils/exceptions';
+} from './utils/exceptions';
 import { Myth, MythDocument } from 'src/myth/schemas/myth.schema';
 import { EditCommentDto } from './dto/edit-comment.dto';
 

@@ -17,7 +17,7 @@ const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const comment_schema_1 = require("./schemas/comment.schema");
 const mongoose_2 = require("mongoose");
-const exceptions_1 = require("./dto/utils/exceptions");
+const exceptions_1 = require("./utils/exceptions");
 const myth_schema_1 = require("../myth/schemas/myth.schema");
 let CommentService = class CommentService {
     constructor(commentModel, mythModel) {

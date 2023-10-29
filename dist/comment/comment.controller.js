@@ -20,7 +20,7 @@ const edit_comment_dto_1 = require("./dto/edit-comment.dto");
 const comment_service_1 = require("./comment.service");
 const jwt_1 = require("@nestjs/jwt");
 const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
-const exceptions_1 = require("./dto/utils/exceptions");
+const exceptions_1 = require("./utils/exceptions");
 let CommentController = class CommentController {
     constructor(commentService, jwtService) {
         this.commentService = commentService;

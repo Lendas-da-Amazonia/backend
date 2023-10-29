@@ -25,6 +25,7 @@
 import { Model } from 'mongoose';
 import { Myth, MythDocument } from './schemas/myth.schema';
 import { CreateMythDto } from './dto/create-myth.dto';
+import { JWTUser } from 'src/auth/interfaces/jwt-user.interface';
 export declare class MythService {
     private mythModel;
     constructor(mythModel: Model<MythDocument>);
@@ -42,5 +43,8 @@ export declare class MythService {
             _id: string;
         }>)[];
     }>;
-    deleteMyth(_id: string): Promise<any>;
+    deleteMyth(_id: string, user: JWTUser): Promise<import("mongoose").Document<unknown, {}, MythDocument> & Myth & Document & Required<{
+        _id: string;
+    }>>;
+    checkPermission(id: string, user_id: string, user_role: string): Promise<boolean>;
 }

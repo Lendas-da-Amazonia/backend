@@ -22,7 +22,7 @@ import {
   CommentNotExistsException,
   MythNotExistsException,
   PermissionError,
-} from './dto/utils/exceptions';
+} from './utils/exceptions';
 
 @ApiTags('Comment')
 @Controller('comment')

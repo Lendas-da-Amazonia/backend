@@ -45,5 +45,7 @@ export declare class MythController {
             _id: string;
         }>)[];
     }>;
-    deletarMythByID(_id: string): Promise<any>;
+    deletarMythByID(_id: string, req: Request): Promise<import("mongoose").Document<unknown, {}, import("./schemas/myth.schema").MythDocument> & import("./schemas/myth.schema").Myth & Document & Required<{
+        _id: string;
+    }>>;
 }

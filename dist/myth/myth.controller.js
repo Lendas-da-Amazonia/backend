@@ -19,6 +19,7 @@ const create_myth_dto_1 = require("./dto/create-myth.dto");
 const swagger_1 = require("@nestjs/swagger");
 const jwt_1 = require("@nestjs/jwt");
 const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
+const exceptions_1 = require("./utils/exceptions");
 let MythController = class MythController {
     constructor(mythService, jwtService) {
         this.mythService = mythService;
@@ -38,8 +39,17 @@ let MythController = class MythController {
     async encontrarMythByAuthor(_id) {
         return this.mythService.findMythByAuthorID(_id);
     }
-    async deletarMythByID(_id) {
-        return this.mythService.deleteMyth(_id);
+    async deletarMythByID(_id, req) {
+        const token = req.headers.authorization.toString().replace('Bearer ', '');
+        const user = this.jwtService.decode(token);
+        try {
+            return await this.mythService.deleteMyth(_id, user);
+        }
+        catch (error) {
+            if (error instanceof exceptions_1.MythNotFound || error instanceof exceptions_1.PermissionError) {
+                throw new common_1.BadRequestException(error.message);
+            }
+        }
     }
 };
 exports.MythController = MythController;
@@ -62,6 +72,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], MythController.prototype, "cadastrarMyth", null);
 __decorate([
+    (0, swagger_1.ApiOperation)({ description: 'Rota para buscar lenda por id' }),
     (0, common_1.Get)(':_id'),
     __param(0, (0, common_1.Param)('_id')),
     __metadata("design:type", Function),
@@ -69,6 +80,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], MythController.prototype, "encontrarMythByID", null);
 __decorate([
+    (0, swagger_1.ApiOperation)({ description: 'Rota para buscar lenda pelo id do autor' }),
     (0, common_1.Get)('/author/:_id'),
     __param(0, (0, common_1.Param)('_id')),
     __metadata("design:type", Function),
@@ -76,10 +88,13 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], MythController.prototype, "encontrarMythByAuthor", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.Delete)('delete/:_id'),
     __param(0, (0, common_1.Param)('_id')),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], MythController.prototype, "deletarMythByID", null);
 exports.MythController = MythController = __decorate([
