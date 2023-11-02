@@ -8,4 +8,7 @@ export class CreateMythDto {
 
   @ApiProperty()
   texto: string;
+
+  @ApiProperty()
+  imagem: string;
 }

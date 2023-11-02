@@ -31,9 +31,10 @@ export declare class Myth {
     update_at: Date;
     titulo: string;
     texto: string;
+    imagem: string;
 }
 export declare const MythSchema: import("mongoose").Schema<Myth, import("mongoose").Model<Myth, any, any, any, import("mongoose").Document<unknown, any, Myth> & Myth & Required<{
     _id: string;
-}>, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Myth, import("mongoose").Document<unknown, {}, Myth> & Myth & Required<{
+}>, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Myth, import("mongoose").Document<unknown, {}, import("mongoose").FlatRecord<Myth>> & import("mongoose").FlatRecord<Myth> & Required<{
     _id: string;
 }>>;

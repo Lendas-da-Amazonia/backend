@@ -27,4 +27,10 @@ __decorate([
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
 ], EditMythDto.prototype, "texto", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", String)
+], EditMythDto.prototype, "imagem", void 0);
 //# sourceMappingURL=edit-myth.dto.js.map
