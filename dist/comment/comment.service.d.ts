@@ -27,11 +27,13 @@ import { Model } from 'mongoose';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { Myth, MythDocument } from 'src/myth/schemas/myth.schema';
 import { EditCommentDto } from './dto/edit-comment.dto';
+import { UserDocument } from 'src/user/schemas/user.schema';
 export declare class CommentService {
     private commentModel;
     private mythModel;
-    constructor(commentModel: Model<CommentDocument>, mythModel: Model<MythDocument>);
-    findAll(): Promise<Comment[]>;
+    private userModel;
+    constructor(commentModel: Model<CommentDocument>, mythModel: Model<MythDocument>, userModel: Model<UserDocument>);
+    findAll(): Promise<void>;
     createComment(comment: CreateCommentDto, user_id: string): Promise<{
         status: number;
         message: string;
@@ -54,4 +56,5 @@ export declare class CommentService {
         message: string;
     }>;
     checkPermission(id: string, user_id: string, user_role: string): Promise<boolean>;
+    updateCommentAuthorInfo(comment: CommentDocument): Promise<void>;
 }

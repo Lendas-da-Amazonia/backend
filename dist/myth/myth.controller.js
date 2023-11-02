@@ -32,7 +32,7 @@ let MythController = class MythController {
     async cadastrarMyth(req, createMythDto) {
         const token = req.headers.authorization.toString().replace('Bearer ', '');
         const user = this.jwtService.decode(token);
-        return this.mythService.createMyth(createMythDto, user._id);
+        return this.mythService.createMyth(createMythDto, user);
     }
     async encontrarMythByID(_id) {
         return this.mythService.findMythByID(_id);

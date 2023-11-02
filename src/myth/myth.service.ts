@@ -17,7 +17,7 @@ export class MythService {
     return { message: `${total} lendas encontradas`, myths };
   }
 
-  async createMyth(myth: CreateMythDto, user_id: string): Promise<Myth> {
+  async createMyth(myth: CreateMythDto, user: JWTUser): Promise<Myth> {
     if (!myth.titulo) {
       throw new PreconditionFailedException('Titulo não pode ser vazio');
     }
@@ -29,7 +29,9 @@ export class MythService {
     now.setHours(now.getHours() + AMT_OFFSET);
 
     const createdMyth = new this.mythModel({
-      id_autor: user_id,
+      id_autor: user._id,
+      autor_nome: user.username,
+      autor_email: user.email,
       created_at: now,
       titulo: myth.titulo,
       texto: myth.texto,

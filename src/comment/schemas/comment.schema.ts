@@ -9,6 +9,12 @@ export class Comment {
   id_user: string;
 
   @Prop()
+  nome_user: string;
+
+  @Prop()
+  email_user: string;
+
+  @Prop()
   id_myth: string;
 
   @Prop()

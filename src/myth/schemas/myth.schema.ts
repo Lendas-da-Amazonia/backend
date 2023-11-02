@@ -10,6 +10,12 @@ export class Myth {
   id_autor: string;
 
   @Prop()
+  nome_autor: string;
+
+  @Prop()
+  email_autor: string;
+
+  @Prop()
   created_at: Date;
 
   @Prop()

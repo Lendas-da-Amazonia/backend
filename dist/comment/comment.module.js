@@ -15,6 +15,7 @@ const comment_schema_1 = require("./schemas/comment.schema");
 const jwt_strategy_1 = require("../auth/strategies/jwt.strategy");
 const jwt_1 = require("@nestjs/jwt");
 const myth_schema_1 = require("../myth/schemas/myth.schema");
+const user_schema_1 = require("../user/schemas/user.schema");
 let CommentModule = class CommentModule {
 };
 exports.CommentModule = CommentModule;
@@ -23,6 +24,7 @@ exports.CommentModule = CommentModule = __decorate([
         imports: [
             mongoose_1.MongooseModule.forFeature([{ name: comment_schema_1.Comment.name, schema: comment_schema_1.CommentSchema }]),
             mongoose_1.MongooseModule.forFeature([{ name: myth_schema_1.Myth.name, schema: myth_schema_1.MythSchema }]),
+            mongoose_1.MongooseModule.forFeature([{ name: user_schema_1.User.name, schema: user_schema_1.UserSchema }]),
             jwt_1.JwtModule,
         ],
         controllers: [comment_controller_1.CommentController],

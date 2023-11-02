@@ -18,16 +18,18 @@ const myth_schema_1 = require("./schemas/myth.schema");
 const common_1 = require("@nestjs/common");
 const mongoose_2 = require("@nestjs/mongoose");
 const exceptions_1 = require("./utils/exceptions");
+const user_schema_1 = require("../user/schemas/user.schema");
 let MythService = class MythService {
-    constructor(mythModel) {
+    constructor(mythModel, userModel) {
         this.mythModel = mythModel;
+        this.userModel = userModel;
     }
     async listarMyth() {
         const myths = await this.mythModel.find({});
         const total = await this.mythModel.find({}).count();
         return { message: `${total} lendas encontradas`, myths };
     }
-    async createMyth(myth, user_id) {
+    async createMyth(myth, user) {
         if (!myth.titulo) {
             throw new common_1.PreconditionFailedException('Titulo não pode ser vazio');
         }
@@ -38,7 +40,9 @@ let MythService = class MythService {
         const AMT_OFFSET = -4;
         now.setHours(now.getHours() + AMT_OFFSET);
         const createdMyth = new this.mythModel({
-            id_autor: user_id,
+            id_autor: user._id,
+            autor_nome: user.username,
+            autor_email: user.email,
             created_at: now,
             titulo: myth.titulo,
             texto: myth.texto,
@@ -109,11 +113,22 @@ let MythService = class MythService {
             return false;
         }
     }
+    async updateMythAuthorInfo(myth) {
+        if (!myth.nome_autor || !myth.email_autor) {
+            const user = await this.userModel.findOne({ _id: myth.id_autor });
+            console.log(user);
+            myth.nome_autor = user.nome;
+            myth.email_autor = user.email;
+            await myth.save();
+        }
+    }
 };
 exports.MythService = MythService;
 exports.MythService = MythService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_2.InjectModel)(myth_schema_1.Myth.name)),
-    __metadata("design:paramtypes", [mongoose_1.Model])
+    __param(1, (0, mongoose_2.InjectModel)(user_schema_1.User.name)),
+    __metadata("design:paramtypes", [mongoose_1.Model,
+        mongoose_1.Model])
 ], MythService);
 //# sourceMappingURL=myth.service.js.map

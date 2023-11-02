@@ -11,6 +11,7 @@ import { Myth, MythSchema } from 'src/myth/schemas/myth.schema';
   imports: [
     MongooseModule.forFeature([{ name: Comment.name, schema: CommentSchema }]),
     MongooseModule.forFeature([{ name: Myth.name, schema: MythSchema }]),
+
     JwtModule,
   ],
   controllers: [CommentController],

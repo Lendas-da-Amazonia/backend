@@ -21,6 +21,14 @@ __decorate([
 __decorate([
     (0, mongoose_1.Prop)(),
     __metadata("design:type", String)
+], Comment.prototype, "nome_user", void 0);
+__decorate([
+    (0, mongoose_1.Prop)(),
+    __metadata("design:type", String)
+], Comment.prototype, "email_user", void 0);
+__decorate([
+    (0, mongoose_1.Prop)(),
+    __metadata("design:type", String)
 ], Comment.prototype, "id_myth", void 0);
 __decorate([
     (0, mongoose_1.Prop)(),

@@ -19,13 +19,14 @@ const comment_schema_1 = require("./schemas/comment.schema");
 const mongoose_2 = require("mongoose");
 const exceptions_1 = require("./utils/exceptions");
 const myth_schema_1 = require("../myth/schemas/myth.schema");
+const user_schema_1 = require("../user/schemas/user.schema");
 let CommentService = class CommentService {
-    constructor(commentModel, mythModel) {
+    constructor(commentModel, mythModel, userModel) {
         this.commentModel = commentModel;
         this.mythModel = mythModel;
+        this.userModel = userModel;
     }
     async findAll() {
-        return await this.commentModel.find();
     }
     async createComment(comment, user_id) {
         if (!comment.text) {
@@ -118,13 +119,24 @@ let CommentService = class CommentService {
             return false;
         }
     }
+    async updateCommentAuthorInfo(comment) {
+        if (!comment.nome_user || !comment.email_user) {
+            const user = await this.userModel.findOne({ _id: comment.id_user });
+            console.log(user);
+            comment.nome_user = user.nome;
+            comment.email_user = user.email;
+            await comment.save();
+        }
+    }
 };
 exports.CommentService = CommentService;
 exports.CommentService = CommentService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)(comment_schema_1.Comment.name)),
     __param(1, (0, mongoose_1.InjectModel)(myth_schema_1.Myth.name)),
+    __param(2, (0, mongoose_1.InjectModel)(user_schema_1.User.name)),
     __metadata("design:paramtypes", [mongoose_2.Model,
+        mongoose_2.Model,
         mongoose_2.Model])
 ], CommentService);
 //# sourceMappingURL=comment.service.js.map

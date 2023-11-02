@@ -26,6 +26,8 @@ import { Document } from 'mongoose';
 export type CommentDocument = Comment & Document;
 export declare class Comment {
     id_user: string;
+    nome_user: string;
+    email_user: string;
     id_myth: string;
     created_at: Date;
     text: string;

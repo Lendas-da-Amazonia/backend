@@ -14,6 +14,7 @@ const myth_service_1 = require("./myth.service");
 const myth_schema_1 = require("./schemas/myth.schema");
 const jwt_strategy_1 = require("../auth/strategies/jwt.strategy");
 const jwt_1 = require("@nestjs/jwt");
+const user_schema_1 = require("../user/schemas/user.schema");
 let MythModule = class MythModule {
 };
 exports.MythModule = MythModule;
@@ -21,6 +22,7 @@ exports.MythModule = MythModule = __decorate([
     (0, common_1.Module)({
         imports: [
             mongoose_1.MongooseModule.forFeature([{ name: myth_schema_1.Myth.name, schema: myth_schema_1.MythSchema }]),
+            mongoose_1.MongooseModule.forFeature([{ name: user_schema_1.User.name, schema: user_schema_1.UserSchema }]),
             jwt_1.JwtModule,
         ],
         controllers: [myth_controller_1.MythController],

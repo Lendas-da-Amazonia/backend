@@ -27,6 +27,8 @@ export type MythDocument = Myth & Document;
 export declare class Myth {
     _id: string;
     id_autor: string;
+    nome_autor: string;
+    email_autor: string;
     created_at: Date;
     update_at: Date;
     titulo: string;

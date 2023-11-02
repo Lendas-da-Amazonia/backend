@@ -25,7 +25,7 @@ async function bootstrap() {
     const document = swagger_1.SwaggerModule.createDocument(app, config);
     swagger_1.SwaggerModule.setup('swagger', app, document, {
         customSiteTitle: 'Backend Lendas da Amazônia',
-        customfavIcon: 'https://avatars.githubusercontent.com/u/6936373?s=200&v=4',
+        customfavIcon: 'https://avatars.githubusercontent.com/u/143668025?s=400&u=58fdf45f5ed414145aef0a9f849d75bea139e33e&v=4',
         customJs: [
             'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-bundle.min.js',
             'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-standalone-preset.min.js',

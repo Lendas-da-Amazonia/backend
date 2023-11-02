@@ -20,6 +20,14 @@ __decorate([
 ], Myth.prototype, "id_autor", void 0);
 __decorate([
     (0, mongoose_1.Prop)(),
+    __metadata("design:type", String)
+], Myth.prototype, "nome_autor", void 0);
+__decorate([
+    (0, mongoose_1.Prop)(),
+    __metadata("design:type", String)
+], Myth.prototype, "email_autor", void 0);
+__decorate([
+    (0, mongoose_1.Prop)(),
     __metadata("design:type", Date)
 ], Myth.prototype, "created_at", void 0);
 __decorate([

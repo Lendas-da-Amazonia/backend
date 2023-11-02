@@ -18,10 +18,6 @@ export class CommentService {
     @InjectModel(Myth.name) private mythModel: Model<MythDocument>,
   ) {}
 
-  async findAll(): Promise<Comment[]> {
-    return await this.commentModel.find();
-  }
-
   async createComment(comment: CreateCommentDto, user_id: string) {
     if (!comment.text) {
       throw new Error('Texto não pode ser vazio');
