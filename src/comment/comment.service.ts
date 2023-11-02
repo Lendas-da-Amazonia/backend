@@ -10,6 +10,7 @@ import {
 } from './utils/exceptions';
 import { Myth, MythDocument } from 'src/myth/schemas/myth.schema';
 import { EditCommentDto } from './dto/edit-comment.dto';
+import { JWTUser } from 'src/auth/interfaces/jwt-user.interface';
 
 @Injectable()
 export class CommentService {
@@ -18,7 +19,7 @@ export class CommentService {
     @InjectModel(Myth.name) private mythModel: Model<MythDocument>,
   ) {}
 
-  async createComment(comment: CreateCommentDto, user_id: string) {
+  async createComment(comment: CreateCommentDto, user: JWTUser) {
     if (!comment.text) {
       throw new Error('Texto não pode ser vazio');
     }
@@ -37,7 +38,9 @@ export class CommentService {
     now.setHours(now.getHours() + AMT_OFFSET);
 
     await this.commentModel.create({
-      id_user: user_id,
+      id_user: user._id,
+      nome_user: user.username,
+      email_user: user.email,
       id_myth: comment.mythId,
       text: comment.text,
       created_at: now,

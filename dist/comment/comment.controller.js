@@ -38,7 +38,7 @@ let CommentController = class CommentController {
         const token = req.headers.authorization.toString().replace('Bearer ', '');
         const user = this.jwtService.decode(token);
         try {
-            return this.commentService.createComment(createCommentDto, user._id);
+            return this.commentService.createComment(createCommentDto, user);
         }
         catch (error) {
             if (error instanceof exceptions_1.MythNotExistsException) {

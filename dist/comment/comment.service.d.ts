@@ -27,11 +27,12 @@ import { Model } from 'mongoose';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { Myth, MythDocument } from 'src/myth/schemas/myth.schema';
 import { EditCommentDto } from './dto/edit-comment.dto';
+import { JWTUser } from 'src/auth/interfaces/jwt-user.interface';
 export declare class CommentService {
     private commentModel;
     private mythModel;
     constructor(commentModel: Model<CommentDocument>, mythModel: Model<MythDocument>);
-    createComment(comment: CreateCommentDto, user_id: string): Promise<{
+    createComment(comment: CreateCommentDto, user: JWTUser): Promise<{
         status: number;
         message: string;
     }>;

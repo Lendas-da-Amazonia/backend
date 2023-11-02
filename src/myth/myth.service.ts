@@ -30,8 +30,8 @@ export class MythService {
 
     const createdMyth = new this.mythModel({
       id_autor: user._id,
-      autor_nome: user.username,
-      autor_email: user.email,
+      nome_autor: user.username,
+      email_autor: user.email,
       created_at: now,
       titulo: myth.titulo,
       texto: myth.texto,

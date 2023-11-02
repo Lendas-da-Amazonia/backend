@@ -24,7 +24,7 @@ let CommentService = class CommentService {
         this.commentModel = commentModel;
         this.mythModel = mythModel;
     }
-    async createComment(comment, user_id) {
+    async createComment(comment, user) {
         if (!comment.text) {
             throw new Error('Texto não pode ser vazio');
         }
@@ -39,7 +39,9 @@ let CommentService = class CommentService {
         const AMT_OFFSET = -4;
         now.setHours(now.getHours() + AMT_OFFSET);
         await this.commentModel.create({
-            id_user: user_id,
+            id_user: user._id,
+            nome_user: user.username,
+            email_user: user.email,
             id_myth: comment.mythId,
             text: comment.text,
             created_at: now,
