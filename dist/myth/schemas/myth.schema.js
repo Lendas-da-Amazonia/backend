@@ -42,6 +42,10 @@ __decorate([
     (0, mongoose_1.Prop)(),
     __metadata("design:type", String)
 ], Myth.prototype, "texto", void 0);
+__decorate([
+    (0, mongoose_1.Prop)(),
+    __metadata("design:type", String)
+], Myth.prototype, "imagem", void 0);
 exports.Myth = Myth = __decorate([
     (0, mongoose_1.Schema)({ collection: 'lendas' })
 ], Myth);

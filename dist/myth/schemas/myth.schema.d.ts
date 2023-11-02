@@ -33,6 +33,7 @@ export declare class Myth {
     update_at: Date;
     titulo: string;
     texto: string;
+    imagem: string;
 }
 export declare const MythSchema: import("mongoose").Schema<Myth, import("mongoose").Model<Myth, any, any, any, import("mongoose").Document<unknown, any, Myth> & Myth & Required<{
     _id: string;

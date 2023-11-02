@@ -24,4 +24,8 @@ __decorate([
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
 ], CreateMythDto.prototype, "texto", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", String)
+], CreateMythDto.prototype, "imagem", void 0);
 //# sourceMappingURL=create-myth.dto.js.map

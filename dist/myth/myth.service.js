@@ -18,11 +18,9 @@ const myth_schema_1 = require("./schemas/myth.schema");
 const common_1 = require("@nestjs/common");
 const mongoose_2 = require("@nestjs/mongoose");
 const exceptions_1 = require("./utils/exceptions");
-const user_schema_1 = require("../user/schemas/user.schema");
 let MythService = class MythService {
-    constructor(mythModel, userModel) {
+    constructor(mythModel) {
         this.mythModel = mythModel;
-        this.userModel = userModel;
     }
     async listarMyth() {
         const myths = await this.mythModel.find({});
@@ -46,6 +44,7 @@ let MythService = class MythService {
             created_at: now,
             titulo: myth.titulo,
             texto: myth.texto,
+            imagem: myth.imagem,
         });
         return createdMyth.save();
     }
@@ -84,6 +83,9 @@ let MythService = class MythService {
         if (myth.texto != null) {
             mythExists.texto = myth.texto;
         }
+        if (myth.imagem != null) {
+            mythExists.imagem = myth.imagem;
+        }
         mythExists.save();
         return { status: 201, message: 'Lenda editada com sucesso!' };
     }
@@ -113,22 +115,11 @@ let MythService = class MythService {
             return false;
         }
     }
-    async updateMythAuthorInfo(myth) {
-        if (!myth.nome_autor || !myth.email_autor) {
-            const user = await this.userModel.findOne({ _id: myth.id_autor });
-            console.log(user);
-            myth.nome_autor = user.nome;
-            myth.email_autor = user.email;
-            await myth.save();
-        }
-    }
 };
 exports.MythService = MythService;
 exports.MythService = MythService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_2.InjectModel)(myth_schema_1.Myth.name)),
-    __param(1, (0, mongoose_2.InjectModel)(user_schema_1.User.name)),
-    __metadata("design:paramtypes", [mongoose_1.Model,
-        mongoose_1.Model])
+    __metadata("design:paramtypes", [mongoose_1.Model])
 ], MythService);
 //# sourceMappingURL=myth.service.js.map

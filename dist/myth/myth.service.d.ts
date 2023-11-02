@@ -27,11 +27,9 @@ import { Myth, MythDocument } from './schemas/myth.schema';
 import { CreateMythDto } from './dto/create-myth.dto';
 import { JWTUser } from 'src/auth/interfaces/jwt-user.interface';
 import { EditMythDto } from './dto/edit-myth.dto';
-import { UserDocument } from 'src/user/schemas/user.schema';
 export declare class MythService {
     private mythModel;
-    private userModel;
-    constructor(mythModel: Model<MythDocument>, userModel: Model<UserDocument>);
+    constructor(mythModel: Model<MythDocument>);
     listarMyth(): Promise<{
         message: string;
         myths: (import("mongoose").Document<unknown, {}, MythDocument> & Myth & Document & Required<{
@@ -54,5 +52,4 @@ export declare class MythService {
         message: string;
     }>;
     checkPermission(id: string, user_id: string, user_role: string): Promise<boolean>;
-    updateMythAuthorInfo(myth: MythDocument): Promise<void>;
 }

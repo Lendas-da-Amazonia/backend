@@ -26,6 +26,9 @@ export class Myth {
 
   @Prop()
   texto: string;
+
+  @Prop()
+  imagem: string;
 }
 
 export const MythSchema = SchemaFactory.createForClass(Myth);

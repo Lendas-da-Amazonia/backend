@@ -35,6 +35,7 @@ export class MythService {
       created_at: now,
       titulo: myth.titulo,
       texto: myth.texto,
+      imagem: myth.imagem,
     });
     return createdMyth.save();
   }
@@ -80,6 +81,10 @@ export class MythService {
     if (myth.texto != null) {
       mythExists.texto = myth.texto;
     }
+    if (myth.imagem != null) {
+      mythExists.imagem = myth.imagem;
+    }
+
     mythExists.save();
 
     return { status: 201, message: 'Lenda editada com sucesso!' };

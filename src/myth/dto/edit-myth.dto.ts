@@ -11,4 +11,9 @@ export class EditMythDto {
   @IsString()
   @ApiProperty()
   texto: string;
+
+  @IsOptional()
+  @IsString()
+  @ApiProperty()
+  imagem: string;
 }

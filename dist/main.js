@@ -1,10 +1,16 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@nestjs/core");
 const app_module_1 = require("./app.module");
+const body_parser_1 = __importDefault(require("body-parser"));
 const swagger_1 = require("@nestjs/swagger");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
+    app.use(body_parser_1.default.json({ limit: '50mb' }));
+    app.use(body_parser_1.default.urlencoded({ extended: true, limit: '50mb' }));
     app.enableCors({
         origin: '*',
     });
