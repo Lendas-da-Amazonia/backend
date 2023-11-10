@@ -97,7 +97,7 @@ __decorate([
 ], MythController.prototype, "encontrarMythByID", null);
 __decorate([
     (0, swagger_1.ApiOperation)({ description: 'Rota para buscar lenda por palavra' }),
-    (0, common_1.Get)('/:word'),
+    (0, common_1.Get)('/search/:word'),
     __param(0, (0, common_1.Param)('word')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),

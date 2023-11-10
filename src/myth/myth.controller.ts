@@ -54,7 +54,7 @@ export class MythController {
   }
 
   @ApiOperation({ description: 'Rota para buscar lenda por palavra' })
-  @Get('/:word')
+  @Get('/search/:word')
   async encontrarMythByWord(@Param('word') word: string) {
     return this.mythService.findMythByWord(word);
   }

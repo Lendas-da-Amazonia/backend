@@ -99,4 +99,25 @@ export class UserService {
     }
     return false;
   }
+
+  async atualizarRole(id: string, user: JWTUser) {
+    const permission = await this.checkAdmin(user.role);
+
+    if (!permission) {
+      throw new PermissionError();
+    }
+
+    const userTemp = await this.userModel.findOneAndUpdate(
+      { _id: id },
+      { role: 'admin' },
+    );
+    return { message: `Usuário ${userTemp.nome} foi promovido à admin.` };
+  }
+
+  async checkAdmin(user_role: string) {
+    if (user_role == 'admin') {
+      return true;
+    }
+    return false;
+  }
 }

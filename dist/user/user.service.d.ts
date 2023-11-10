@@ -55,4 +55,8 @@ export declare class UserService {
         message: string;
     }>;
     checkPermission(id: string, user_id: string, user_role: string): Promise<boolean>;
+    atualizarRole(id: string, user: JWTUser): Promise<{
+        message: string;
+    }>;
+    checkAdmin(user_role: string): Promise<boolean>;
 }

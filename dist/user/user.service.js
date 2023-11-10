@@ -98,6 +98,20 @@ let UserService = class UserService {
         }
         return false;
     }
+    async atualizarRole(id, user) {
+        const permission = await this.checkAdmin(user.role);
+        if (!permission) {
+            throw new exceptions_1.PermissionError();
+        }
+        const userTemp = await this.userModel.findOneAndUpdate({ _id: id }, { role: 'admin' });
+        return { message: `Usuário ${userTemp.nome} foi promovido à admin.` };
+    }
+    async checkAdmin(user_role) {
+        if (user_role == 'admin') {
+            return true;
+        }
+        return false;
+    }
 };
 exports.UserService = UserService;
 exports.UserService = UserService = __decorate([

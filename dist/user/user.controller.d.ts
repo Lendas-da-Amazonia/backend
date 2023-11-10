@@ -50,4 +50,7 @@ export declare class UserController {
     deletarUser(id: string, req: Request): Promise<{
         message: string;
     }>;
+    atualizarRole(id: string, req: Request): Promise<{
+        message: string;
+    }>;
 }

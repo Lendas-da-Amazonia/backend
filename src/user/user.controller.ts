@@ -5,6 +5,7 @@ import {
   Body,
   Param,
   Delete,
+  Put,
   BadRequestException,
   UseGuards,
   Req,
@@ -71,6 +72,21 @@ export class UserController {
     const user = this.jwtService.decode(token) as JWTUser;
     try {
       return await this.userService.deletarUser(id, user);
+    } catch (error) {
+      if (error instanceof PermissionError) {
+        throw new BadRequestException(error.message);
+      }
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @Put('promote/:id')
+  async atualizarRole(@Param('id') id: string, @Req() req: Request) {
+    const token = req.headers.authorization.toString().replace('Bearer ', '');
+    const user = this.jwtService.decode(token) as JWTUser;
+    try {
+      return await this.userService.atualizarRole(id, user);
     } catch (error) {
       if (error instanceof PermissionError) {
         throw new BadRequestException(error.message);

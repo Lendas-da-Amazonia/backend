@@ -57,6 +57,18 @@ let UserController = class UserController {
             }
         }
     }
+    async atualizarRole(id, req) {
+        const token = req.headers.authorization.toString().replace('Bearer ', '');
+        const user = this.jwtService.decode(token);
+        try {
+            return await this.userService.atualizarRole(id, user);
+        }
+        catch (error) {
+            if (error instanceof exceptions_1.PermissionError) {
+                throw new common_1.BadRequestException(error.message);
+            }
+        }
+    }
 };
 exports.UserController = UserController;
 __decorate([
@@ -93,6 +105,16 @@ __decorate([
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "deletarUser", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, common_1.Put)('promote/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "atualizarRole", null);
 exports.UserController = UserController = __decorate([
     (0, common_1.Controller)('user'),
     (0, swagger_1.ApiTags)('User'),
