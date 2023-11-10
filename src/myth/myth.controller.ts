@@ -53,6 +53,12 @@ export class MythController {
     return this.mythService.findMythByID(_id);
   }
 
+  @ApiOperation({ description: 'Rota para buscar lenda por palavra' })
+  @Get('/:word')
+  async encontrarMythByWord(@Param('word') word: string) {
+    return this.mythService.findMythByWord(word);
+  }
+
   @ApiOperation({ description: 'Rota para buscar lenda pelo id do autor' })
   @Get('/author/:_id')
   async encontrarMythByAuthor(@Param('_id') _id: string) {

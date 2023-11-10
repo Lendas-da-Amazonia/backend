@@ -37,6 +37,9 @@ let MythController = class MythController {
     async encontrarMythByID(_id) {
         return this.mythService.findMythByID(_id);
     }
+    async encontrarMythByWord(word) {
+        return this.mythService.findMythByWord(word);
+    }
     async encontrarMythByAuthor(_id) {
         return this.mythService.findMythByAuthorID(_id);
     }
@@ -92,6 +95,14 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], MythController.prototype, "encontrarMythByID", null);
+__decorate([
+    (0, swagger_1.ApiOperation)({ description: 'Rota para buscar lenda por palavra' }),
+    (0, common_1.Get)('/:word'),
+    __param(0, (0, common_1.Param)('word')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], MythController.prototype, "encontrarMythByWord", null);
 __decorate([
     (0, swagger_1.ApiOperation)({ description: 'Rota para buscar lenda pelo id do autor' }),
     (0, common_1.Get)('/author/:_id'),

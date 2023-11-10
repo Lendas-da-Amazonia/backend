@@ -115,6 +115,28 @@ let MythService = class MythService {
             return false;
         }
     }
+    async findMythByWord(word) {
+        try {
+            const myths = await this.mythModel.find({
+                $or: [
+                    { titulo: { $regex: word, $options: 'i' } },
+                    { texto: { $regex: word, $options: 'i' } },
+                ],
+            });
+            const total = await this.mythModel
+                .find({
+                $or: [
+                    { titulo: { $regex: word, $options: 'i' } },
+                    { texto: { $regex: word, $options: 'i' } },
+                ],
+            })
+                .count();
+            return { message: `${total} lendas encontradas`, myths };
+        }
+        catch (e) {
+            throw new Error('Lenda não encontrada');
+        }
+    }
 };
 exports.MythService = MythService;
 exports.MythService = MythService = __decorate([

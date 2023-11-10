@@ -52,4 +52,10 @@ export declare class MythService {
         message: string;
     }>;
     checkPermission(id: string, user_id: string, user_role: string): Promise<boolean>;
+    findMythByWord(word: string): Promise<{
+        message: string;
+        myths: (import("mongoose").Document<unknown, {}, MythDocument> & Myth & Document & Required<{
+            _id: string;
+        }>)[];
+    }>;
 }
