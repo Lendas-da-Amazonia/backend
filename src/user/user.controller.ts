@@ -81,7 +81,7 @@ export class UserController {
 
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @Put('promote/:id')
+  @Patch('promote/:id')
   async atualizarRole(@Param('id') id: string, @Req() req: Request) {
     const token = req.headers.authorization.toString().replace('Bearer ', '');
     const user = this.jwtService.decode(token) as JWTUser;
