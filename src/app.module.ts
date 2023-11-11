@@ -8,9 +8,17 @@ import { AuthModule } from './auth/auth.module';
 import { RolesGuard } from './auth/guards/roles.guard';
 import { JwtService } from '@nestjs/jwt';
 import { CommentModule } from './comment/comment.module';
+import { FavoriteModule } from './favorite/favorite.module';
 
 @Module({
-  imports: [AuthModule, DatabaseModule, UserModule, MythModule, CommentModule],
+  imports: [
+    AuthModule,
+    DatabaseModule,
+    UserModule,
+    MythModule,
+    CommentModule,
+    FavoriteModule,
+  ],
   controllers: [AppController],
   providers: [
     AppService,
